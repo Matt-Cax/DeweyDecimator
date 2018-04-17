@@ -19,7 +19,11 @@ public class DD extends Application{
 	
 	private Stage stage;
 	private Scene libView;
+	private Scene adminView;
 	private Scene addPatron;
+	private Scene fines; 
+	private Scene addAdmin;
+	private Scene addLib;
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -27,17 +31,26 @@ public class DD extends Application{
 		this.stage = stage;
 		Scene login = createLogin();
 		Scene libView = createLibView();
+		Scene adminView = createAdminView();
 		Scene addPatron = createAddPatron();
+		Scene fines = createFines();
+		Scene addAdmin = createAddAdmin();
+		Scene addLib = createAddLib();
 		this.libView = libView;
+		this.adminView = adminView;
 		this.addPatron = addPatron;
+		this.fines = fines;
+		this.addAdmin = addAdmin;
+		this.addLib = addLib;
 		
 		//Launch Program
-		stage.setTitle("Dewey Decimator");
 		stage.setHeight(600);
 		stage.setWidth(800);
+		stage.setTitle("Dewey Decimator");
 		stage.setScene(login);
 		stage.show();
 	}
+	
 
 	private Scene createLogin() {
 		//Initialize Large Scale Layouts
@@ -69,9 +82,10 @@ public class DD extends Application{
 		
 		//Launch Scene
 		bpMaster.setCenter(grid);
-		Scene login = new Scene(bpMaster);
-		return login;
+		Scene loginScene = new Scene(bpMaster);
+		return loginScene;
 	}
+	
 	
 	private Scene createLibView() {
 		//Initialize Large Scale Layouts
@@ -145,33 +159,111 @@ public class DD extends Application{
 		
 		//Button Actions
 		addPatronB.setOnAction(e -> {
+			stage.setHeight(350);
+			stage.setWidth(500);
+			stage.setTitle("Add Patron");
 			stage.setScene(addPatron);
+		});
+		finesB.setOnAction(e -> {
+			stage.setHeight(200);
+			stage.setWidth(500);
+			stage.setTitle("Fines");
+			stage.setScene(fines);
 		});
 		
 		//Launch Scene
 		bpMaster.setTop(menu);
 		bpMaster.setCenter(options);
-		Scene patronView = new Scene(bpMaster);
-		return patronView;
+		Scene libViewScene = new Scene(bpMaster);
+		return libViewScene;
 	}
+	
+	
+	private Scene createAdminView() {
+		BorderPane bpMaster = new BorderPane();
+		HBox menu = createTabs();
+		VBox vbox = new VBox(5);
+		
+		vbox.setStyle("-fx-background-color: #f5deb3;");
+		vbox.setAlignment(Pos.TOP_CENTER);
+		vbox.setPadding(new Insets(30, 50, 30, 50));
+		
+		Button addAdminB = new Button("Add Administrator");
+		addAdminB.setPrefWidth(Double.MAX_VALUE);
+		Button addLibB = new Button("Add Librarian");
+		addLibB.setPrefWidth(Double.MAX_VALUE);
+		vbox.getChildren().addAll(addAdminB, addLibB);
+		
+		addAdminB.setOnAction(e -> {
+			stage.setHeight(200);
+			stage.setWidth(500);
+			stage.setTitle("Add Aministrator");
+			stage.setScene(addAdmin);
+		});
+		addLibB.setOnAction(e -> {
+			stage.setHeight(200);
+			stage.setWidth(500);
+			stage.setTitle("Add Librarian");
+			stage.setScene(addLib);
+		});
+		
+		bpMaster.setTop(menu);
+		bpMaster.setCenter(vbox);
+		Scene adminViewScene = new Scene(bpMaster);
+		return adminViewScene;
+	}
+
+	
+	private Scene createFines() {
+		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER);
+		grid.setStyle("-fx-background-color: #f5deb3;");
+		grid.setVgap(15);
+		grid.setHgap(15);
+		
+		Text cardNumT = new Text("Library Card #");
+		Text finesT = new Text("Fines");
+		TextField cardNumTF  = new TextField();
+		TextField finesTF = new TextField();
+		Button search = new Button("Search");
+		Button save = new Button("Save");
+		grid.add(cardNumT, 0, 0);
+		grid.add(finesT, 0, 1);
+		grid.add(cardNumTF, 1, 0);
+		grid.add(finesTF, 1, 1);
+		grid.add(search, 2, 1);
+		grid.add(save, 2, 2);
+		
+		Scene finesScene = new Scene(grid);
+		return finesScene;
+	}
+	
 	
 	private Scene createAddPatron() {
 		GridPane grid = new GridPane();
 		grid.setStyle("-fx-background-color: #f5deb3;");
+		grid.setVgap(5);
+		grid.setHgap(5);
 		grid.setPadding(new Insets(50, 15, 20, 15));
 		grid.setAlignment(Pos.CENTER);
-		ColumnConstraints c = new ColumnConstraints();
-		c.setHalignment(HPos.RIGHT);
-		grid.getColumnConstraints().addAll(new ColumnConstraints(),c);
+		ColumnConstraints c1 = new ColumnConstraints();
+		c1.setHalignment(HPos.CENTER);
+		ColumnConstraints c2 = new ColumnConstraints();
+		c2.setHalignment(HPos.RIGHT);
+		grid.getColumnConstraints().addAll(c1,c2);
 		
 		Text firstName = new Text("First Name");
 		Text lastName = new Text("Last Name");
 		Text address = new Text("Address");
 		Text phoneNum = new Text("Phone #");
 		TextField firstNameTF = new TextField();
+		//firstNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField lastNameTF = new TextField();
+		//lastNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField addressTF = new TextField();
+		//addressTF.setPrefWidth(Double.MAX_VALUE);
 		TextField phoneNumTF = new TextField();
+		//phoneNumTF.setPrefWidth(Double.MAX_VALUE);
 		grid.add(firstName, 0, 0);
 		grid.add(lastName, 0, 1);
 		grid.add(address, 0, 2);
@@ -186,6 +278,72 @@ public class DD extends Application{
 		
 		Scene addPatronScene = new Scene(grid);
 		return addPatronScene;
+	}
+	
+	private Scene createAddAdmin() {
+		GridPane grid = new GridPane();
+		grid.setVgap(10);
+		grid.setHgap(10);
+		grid.setStyle("-fx-background-color: #f5deb3;");
+		grid.setPadding(new Insets(30, 50, 30, 50));
+		grid.setAlignment(Pos.TOP_CENTER);
+		ColumnConstraints c = new ColumnConstraints();
+		c.setHalignment(HPos.RIGHT);
+		grid.getColumnConstraints().addAll(new ColumnConstraints(),c);
+		
+		Text firstName = new Text("First Name");
+		Text lastName = new Text("Last Name");
+		TextField firstNameTF = new TextField();
+		TextField lastNameTF = new TextField();
+		grid.add(firstName, 0, 0);
+		grid.add(lastName, 0, 1);
+		grid.add(firstNameTF, 1, 0);
+		grid.add(lastNameTF, 1, 1);
+		Button create = new Button("Create");
+		grid.add(create, 1, 2);
+		
+		create.setOnAction(e -> {
+			stage.setHeight(200);
+			stage.setWidth(500);
+			stage.setTitle("Dewey Decimator - Administrator");
+			stage.setScene(adminView);
+		});
+		
+		Scene addAdminScene = new Scene(grid);
+		return addAdminScene;
+	}
+	
+	private Scene createAddLib() {
+		GridPane grid = new GridPane();
+		grid.setVgap(10);
+		grid.setHgap(10);
+		grid.setStyle("-fx-background-color: #f5deb3;");
+		grid.setPadding(new Insets(30, 50, 30, 50));
+		grid.setAlignment(Pos.TOP_CENTER);
+		ColumnConstraints c = new ColumnConstraints();
+		c.setHalignment(HPos.RIGHT);
+		grid.getColumnConstraints().addAll(new ColumnConstraints(),c);
+		
+		Text firstName = new Text("First Name");
+		Text lastName = new Text("Last Name");
+		TextField firstNameTF = new TextField();
+		TextField lastNameTF = new TextField();
+		grid.add(firstName, 0, 0);
+		grid.add(lastName, 0, 1);
+		grid.add(firstNameTF, 1, 0);
+		grid.add(lastNameTF, 1, 1);
+		Button create = new Button("Create");
+		grid.add(create, 1, 2);
+		
+		create.setOnAction(e -> {
+			stage.setHeight(200);
+			stage.setWidth(500);
+			stage.setTitle("Dewey Decimator - Administrator");
+			stage.setScene(adminView);
+		});
+		
+		Scene addLibScene = new Scene(grid);
+		return addLibScene;
 	}
 	
 	private HBox createTabs() {
@@ -207,15 +365,23 @@ public class DD extends Application{
 		
 		//Button Actions
 		libScene.setOnAction(e -> {
+			stage.setHeight(600);
+			stage.setWidth(800);
 			stage.setTitle("Dewey Decimator - Librarian");
 			stage.setScene(libView);
+		});
+		adminScene.setOnAction(e -> {
+			stage.setHeight(200);
+			stage.setWidth(500);
+			stage.setTitle("Dewey Decimator - Administrator");
+			stage.setScene(adminView);
 		});
 		
 		return menu;
 	}
 
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		launch(args);
 	}
 
