@@ -1,3 +1,5 @@
+package deweyDecimator;
+
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -14,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+//import
 
 public class DD extends Application{
 	
@@ -95,6 +99,7 @@ public class DD extends Application{
 		VBox options = new VBox(15);
 		options.setAlignment(Pos.CENTER);
 		options.setStyle("-fx-background-color: #f5deb3;");
+		options.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		HBox checkOut = new HBox(100);
 		checkOut.setAlignment(Pos.CENTER_LEFT);
 		checkOut.setStyle("-fx-border-color: #000000;"
