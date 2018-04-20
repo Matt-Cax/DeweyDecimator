@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -20,15 +21,17 @@ import javafx.stage.Stage;
 //import
 
 public class DD extends Application{
-	
+
+	private SQLManager sql = new SQLManager();
 	private Stage stage;
+	private Scene patronView;
 	private Scene libView;
 	private Scene adminView;
 	private Scene addPatron;
 	private Scene fines; 
 	private Scene addAdmin;
 	private Scene addLib;
-	
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		//Create all Scenes and make them global
@@ -46,7 +49,7 @@ public class DD extends Application{
 		this.fines = fines;
 		this.addAdmin = addAdmin;
 		this.addLib = addLib;
-		
+
 		//Launch Program
 		stage.setHeight(600);
 		stage.setWidth(800);
@@ -54,7 +57,7 @@ public class DD extends Application{
 		stage.setScene(login);
 		stage.show();
 	}
-	
+
 
 	private Scene createLogin() {
 		//Initialize Large Scale Layouts
@@ -62,7 +65,7 @@ public class DD extends Application{
 		bpMaster.setStyle("-fx-background-color: #f5deb3");
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
-		
+
 		//Populate Large Scale Layouts
 		Text title = new Text("Dewey Decimator");
 		title.setStyle("-fx-font-size: 72px; -fx-font-family: monospace");
@@ -78,24 +81,40 @@ public class DD extends Application{
 		grid.add(spacer, 0, 1);
 		grid.add(tooltip, 0, 2);
 		grid.add(hbox, 0 ,3);
+		//grid.setVgrow(title, Priority.ALWAYS);
 		
 		//Button Actions
 		enter.setOnAction(e -> {
-			stage.setScene(libView);
+			String loginID = userID.getText();
+			int userType = SQLManager.ERROR;
+			//If data isn't bad
+			if (!(loginID != null && !loginID.isEmpty()))
+				userType = sql.verifyLogin(loginID);
+			switch(userType) {
+			case SQLManager.PATRON:
+				stage.setScene(patronView);
+				break;
+			case SQLManager.LIBRARIAN:
+				stage.setScene(libView);
+				break;
+			case SQLManager.ADMIN:
+				stage.setScene(adminView);
+				break;
+			}
 		});
-		
+
 		//Launch Scene
 		bpMaster.setCenter(grid);
 		Scene loginScene = new Scene(bpMaster);
 		return loginScene;
 	}
-	
-	
+
+
 	private Scene createLibView() {
 		//Initialize Large Scale Layouts
 		BorderPane bpMaster = new BorderPane();
 		HBox menu = createTabs();
-		
+
 		VBox options = new VBox(15);
 		options.setAlignment(Pos.CENTER);
 		options.setStyle("-fx-background-color: #f5deb3;");
@@ -161,7 +180,7 @@ public class DD extends Application{
 		finesB.setPrefSize(200, 50);
 		buttons.getChildren().addAll(addPatronB, addMediaB, editMediaB, finesB);
 		options.getChildren().addAll(checkOut, checkIn, buttons);
-		
+
 		//Button Actions
 		addPatronB.setOnAction(e -> {
 			stage.setHeight(350);
@@ -175,30 +194,30 @@ public class DD extends Application{
 			stage.setTitle("Fines");
 			stage.setScene(fines);
 		});
-		
+
 		//Launch Scene
 		bpMaster.setTop(menu);
 		bpMaster.setCenter(options);
 		Scene libViewScene = new Scene(bpMaster);
 		return libViewScene;
 	}
-	
-	
+
+
 	private Scene createAdminView() {
 		BorderPane bpMaster = new BorderPane();
 		HBox menu = createTabs();
 		VBox vbox = new VBox(5);
-		
+
 		vbox.setStyle("-fx-background-color: #f5deb3;");
 		vbox.setAlignment(Pos.TOP_CENTER);
 		vbox.setPadding(new Insets(30, 50, 30, 50));
-		
+
 		Button addAdminB = new Button("Add Administrator");
 		addAdminB.setPrefWidth(Double.MAX_VALUE);
 		Button addLibB = new Button("Add Librarian");
 		addLibB.setPrefWidth(Double.MAX_VALUE);
 		vbox.getChildren().addAll(addAdminB, addLibB);
-		
+
 		addAdminB.setOnAction(e -> {
 			stage.setHeight(200);
 			stage.setWidth(500);
@@ -211,21 +230,21 @@ public class DD extends Application{
 			stage.setTitle("Add Librarian");
 			stage.setScene(addLib);
 		});
-		
+
 		bpMaster.setTop(menu);
 		bpMaster.setCenter(vbox);
 		Scene adminViewScene = new Scene(bpMaster);
 		return adminViewScene;
 	}
 
-	
+
 	private Scene createFines() {
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setStyle("-fx-background-color: #f5deb3;");
 		grid.setVgap(15);
 		grid.setHgap(15);
-		
+
 		Text cardNumT = new Text("Library Card #");
 		Text finesT = new Text("Fines");
 		TextField cardNumTF  = new TextField();
@@ -238,12 +257,12 @@ public class DD extends Application{
 		grid.add(finesTF, 1, 1);
 		grid.add(search, 2, 1);
 		grid.add(save, 2, 2);
-		
+
 		Scene finesScene = new Scene(grid);
 		return finesScene;
 	}
-	
-	
+
+
 	private Scene createAddPatron() {
 		GridPane grid = new GridPane();
 		grid.setStyle("-fx-background-color: #f5deb3;");
@@ -256,7 +275,7 @@ public class DD extends Application{
 		ColumnConstraints c2 = new ColumnConstraints();
 		c2.setHalignment(HPos.RIGHT);
 		grid.getColumnConstraints().addAll(c1,c2);
-		
+
 		Text firstName = new Text("First Name");
 		Text lastName = new Text("Last Name");
 		Text address = new Text("Address");
@@ -279,12 +298,12 @@ public class DD extends Application{
 		grid.add(phoneNumTF, 1, 3);
 		Button create = new Button("Create");
 		grid.add(create, 1, 4);
-		
-		
+
+
 		Scene addPatronScene = new Scene(grid);
 		return addPatronScene;
 	}
-	
+
 	private Scene createAddAdmin() {
 		GridPane grid = new GridPane();
 		grid.setVgap(10);
@@ -295,7 +314,7 @@ public class DD extends Application{
 		ColumnConstraints c = new ColumnConstraints();
 		c.setHalignment(HPos.RIGHT);
 		grid.getColumnConstraints().addAll(new ColumnConstraints(),c);
-		
+
 		Text firstName = new Text("First Name");
 		Text lastName = new Text("Last Name");
 		TextField firstNameTF = new TextField();
@@ -306,18 +325,18 @@ public class DD extends Application{
 		grid.add(lastNameTF, 1, 1);
 		Button create = new Button("Create");
 		grid.add(create, 1, 2);
-		
+
 		create.setOnAction(e -> {
 			stage.setHeight(200);
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
 		});
-		
+
 		Scene addAdminScene = new Scene(grid);
 		return addAdminScene;
 	}
-	
+
 	private Scene createAddLib() {
 		GridPane grid = new GridPane();
 		grid.setVgap(10);
@@ -328,7 +347,7 @@ public class DD extends Application{
 		ColumnConstraints c = new ColumnConstraints();
 		c.setHalignment(HPos.RIGHT);
 		grid.getColumnConstraints().addAll(new ColumnConstraints(),c);
-		
+
 		Text firstName = new Text("First Name");
 		Text lastName = new Text("Last Name");
 		TextField firstNameTF = new TextField();
@@ -339,18 +358,18 @@ public class DD extends Application{
 		grid.add(lastNameTF, 1, 1);
 		Button create = new Button("Create");
 		grid.add(create, 1, 2);
-		
+
 		create.setOnAction(e -> {
 			stage.setHeight(200);
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
 		});
-		
+
 		Scene addLibScene = new Scene(grid);
 		return addLibScene;
 	}
-	
+
 	private HBox createTabs() {
 		HBox menu = new HBox();
 		menu.setAlignment(Pos.BOTTOM_RIGHT);
@@ -367,7 +386,7 @@ public class DD extends Application{
 		patronScene.setPrefSize(80, 20);
 		patronScene.setStyle(buttonStyle);
 		menu.getChildren().addAll(patronScene, libScene, adminScene);
-		
+
 		//Button Actions
 		libScene.setOnAction(e -> {
 			stage.setHeight(600);
@@ -381,11 +400,11 @@ public class DD extends Application{
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
 		});
-		
+
 		return menu;
 	}
 
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
