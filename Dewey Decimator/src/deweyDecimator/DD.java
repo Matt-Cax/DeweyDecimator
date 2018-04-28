@@ -406,6 +406,12 @@ public class DD extends Application{
 
 
 	public static void main(String[] args) {
+		String url = "jdbc:mysql://localhost:3306/deweydecimator";
+		String user = "root";
+		String pass = "toor";
+		SQLConnection connection = new SQLConnection(url, user, pass);
+		connection.printAll("Book");
+		
 		launch(args);
 	}
 

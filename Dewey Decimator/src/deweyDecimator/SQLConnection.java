@@ -18,7 +18,44 @@ public class SQLConnection {
 	}
 	
 	// Select Statements
-	
-	
+	public void printAll(String table) {
+		try {
+			String query = "SELECT * FROM " + table;
+			
+			//SQL statement object
+			Statement stmt = sql.createStatement();
+			
+			//get results
+			ResultSet results = stmt.executeQuery(query);
+			
+			// set metadata (note indexing starts at 1)
+			ResultSetMetaData rsmd = results.getMetaData();
+			int numCols = rsmd.getColumnCount();
+			
+			// print column labels
+			for(int i=1; i<= numCols; i++) {
+				if (i == numCols) {
+					System.out.println(rsmd.getColumnLabel(i));
+				} else {
+					System.out.println(rsmd.getColumnLabel(i) + ", ");
+				}
+			}
+			
+			// print query results
+			while(results.next()) {
+				for(int i=1; i<= numCols; i++) {
+					String nextVal = results.getString(i);
+					if(i==numCols) {
+						System.out.println(nextVal);
+					} else {
+						System.out.println(nextVal + ", ");
+					}
+				}
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 }
  
