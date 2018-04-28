@@ -11,7 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -57,7 +56,6 @@ public class DD extends Application{
 		stage.setScene(login);
 		stage.show();
 	}
-
 
 	private Scene createLogin() {
 		//Initialize Large Scale Layouts
@@ -108,7 +106,6 @@ public class DD extends Application{
 		Scene loginScene = new Scene(bpMaster);
 		return loginScene;
 	}
-
 
 	private Scene createLibView() {
 		//Initialize Large Scale Layouts
@@ -202,7 +199,6 @@ public class DD extends Application{
 		return libViewScene;
 	}
 
-
 	private Scene createAdminView() {
 		BorderPane bpMaster = new BorderPane();
 		HBox menu = createTabs();
@@ -237,7 +233,6 @@ public class DD extends Application{
 		return adminViewScene;
 	}
 
-
 	private Scene createFines() {
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
@@ -257,11 +252,14 @@ public class DD extends Application{
 		grid.add(finesTF, 1, 1);
 		grid.add(search, 2, 1);
 		grid.add(save, 2, 2);
+		
+		save.setOnAction(e -> {
+			sql.addFines(Integer.parseInt(cardNumTF.getText()), Double.parseDouble(finesTF.getText()));
+		});
 
 		Scene finesScene = new Scene(grid);
 		return finesScene;
 	}
-
 
 	private Scene createAddPatron() {
 		GridPane grid = new GridPane();
@@ -299,6 +297,9 @@ public class DD extends Application{
 		Button create = new Button("Create");
 		grid.add(create, 1, 4);
 
+		create.setOnAction(e -> {
+			sql.addPatron(firstNameTF.getText(), lastNameTF.getText(), addressTF.getText(), phoneNumTF.getText());
+		});
 
 		Scene addPatronScene = new Scene(grid);
 		return addPatronScene;
@@ -331,6 +332,7 @@ public class DD extends Application{
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
+			sql.addAdmin(firstNameTF.getText(), lastNameTF.getText());
 		});
 
 		Scene addAdminScene = new Scene(grid);
@@ -364,6 +366,7 @@ public class DD extends Application{
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
+			sql.addLib(firstNameTF.getText(), lastNameTF.getText());
 		});
 
 		Scene addLibScene = new Scene(grid);
