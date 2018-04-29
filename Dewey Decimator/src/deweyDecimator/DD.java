@@ -118,12 +118,12 @@ public class DD extends Application{
 
 		VBox options = new VBox(15);
 		options.setAlignment(Pos.CENTER);
-		options.setStyle("-fx-background-color: #f5deb3;");
+		options.setStyle("-fx-background-color: #5e5f66;");
 		options.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		HBox checkOut = new HBox(100);
 		checkOut.setAlignment(Pos.CENTER_LEFT);
 		checkOut.setStyle("-fx-border-color: #000000;"
-				+ "-fx-background-color: #f5f5f5; -fx-border-radius: 8 8 8 8");
+				+ "-fx-background-color: #5e5f66; -fx-border-radius: 8 8 8 8");
 		checkOut.setPadding(new Insets(0, 0, 0, 15));
 		GridPane checkOutGrid = new GridPane();
 		checkOutGrid.setVgap(2);
@@ -147,7 +147,7 @@ public class DD extends Application{
 		HBox checkIn = new HBox(100);
 		checkIn.setAlignment(Pos.CENTER_LEFT);
 		checkIn.setStyle("-fx-border-color: #000000;"
-				+ "-fx-background-color: #f5f5f5; -fx-border-radius: 8 8 8 8");
+				+ "-fx-background-color: #5e5f66; -fx-border-radius: 8 8 8 8");
 		checkIn.setPadding(new Insets(0, 0, 0, 15));
 		GridPane checkInGrid = new GridPane();
 		checkInGrid.setVgap(2);
@@ -208,7 +208,7 @@ public class DD extends Application{
 		HBox menu = createTabs();
 		VBox vbox = new VBox(5);
 
-		vbox.setStyle("-fx-background-color: #f5deb3;");
+		vbox.setStyle("-fx-background-color: #5e5f66;");
 		vbox.setAlignment(Pos.TOP_CENTER);
 		vbox.setPadding(new Insets(30, 50, 30, 50));
 
@@ -240,7 +240,7 @@ public class DD extends Application{
 	private Scene createFines() {
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
-		grid.setStyle("-fx-background-color: #f5deb3;");
+		grid.setStyle("-fx-background-color: #5e5f66;");
 		grid.setVgap(15);
 		grid.setHgap(15);
 
@@ -291,7 +291,7 @@ public class DD extends Application{
 
 	private Scene createAddPatron() {
 		GridPane grid = new GridPane();
-		grid.setStyle("-fx-background-color: #f5deb3;");
+		grid.setStyle("-fx-background-color: #5e5f66;");
 		grid.setVgap(5);
 		grid.setHgap(5);
 		grid.setPadding(new Insets(50, 15, 20, 15));
@@ -348,7 +348,7 @@ public class DD extends Application{
 		GridPane grid = new GridPane();
 		grid.setVgap(10);
 		grid.setHgap(10);
-		grid.setStyle("-fx-background-color: #f5deb3;");
+		grid.setStyle("-fx-background-color: #5e5f66;");
 		grid.setPadding(new Insets(30, 50, 30, 50));
 		grid.setAlignment(Pos.TOP_CENTER);
 		ColumnConstraints c = new ColumnConstraints();
@@ -382,7 +382,7 @@ public class DD extends Application{
 		GridPane grid = new GridPane();
 		grid.setVgap(10);
 		grid.setHgap(10);
-		grid.setStyle("-fx-background-color: #f5deb3;");
+		grid.setStyle("-fx-background-color: #5e5f66;");
 		grid.setPadding(new Insets(30, 50, 30, 50));
 		grid.setAlignment(Pos.TOP_CENTER);
 		ColumnConstraints c = new ColumnConstraints();
@@ -415,8 +415,8 @@ public class DD extends Application{
 	private HBox createTabs() {
 		HBox menu = new HBox();
 		menu.setAlignment(Pos.BOTTOM_RIGHT);
-		menu.setStyle("-fx-background-color: #f5f5f5;");
-		String buttonStyle = "-fx-background-color: #f5f5f5;"
+		menu.setStyle("-fx-background-color: #5e5f66;");
+		String buttonStyle = "-fx-background-color: #5e5f66;"
 				+ "-fx-border-color: #000000; -fx-border-radius: 10 10 0 0"; 
 		Button adminScene = new Button("Admin");
 		adminScene.setPrefSize(80, 20);
