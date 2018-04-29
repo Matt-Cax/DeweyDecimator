@@ -36,12 +36,14 @@ public class DD extends Application{
 		//Create all Scenes and make them global
 		this.stage = stage;
 		Scene login = createLogin();
+		Scene patronView = createPatronView();
 		Scene libView = createLibView();
 		Scene adminView = createAdminView();
 		Scene addPatron = createAddPatron();
 		Scene fines = createFines();
 		Scene addAdmin = createAddAdmin();
 		Scene addLib = createAddLib();
+		this.patronView = patronView;
 		this.libView = libView;
 		this.adminView = adminView;
 		this.addPatron = addPatron;
@@ -111,6 +113,28 @@ public class DD extends Application{
 		return loginScene;
 	}
 
+	private Scene createPatronView()
+	{
+		BorderPane bpMaster = new BorderPane();
+		HBox menu = createTabs();
+		
+		VBox options = new VBox(15);
+		options.setAlignment(Pos.CENTER);
+		options.setStyle("-fx-background-color: #5e5f66;");
+		options.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
+		HBox checkOut = new HBox(100);
+		checkOut.setAlignment(Pos.CENTER_LEFT);
+		checkOut.setStyle("-fx-border-color: #000000;"
+				+ "-fx-background-color: #5e5f66; -fx-border-radius: 8 8 8 8");
+		checkOut.setPadding(new Insets(0, 0, 0, 15));
+		
+		//Launch Scene
+		bpMaster.setTop(menu);
+		bpMaster.setCenter(options);
+		Scene patronViewScene = new Scene(bpMaster);
+		return patronViewScene;
+	}
+	
 	private Scene createLibView() {
 		//Initialize Large Scale Layouts
 		BorderPane bpMaster = new BorderPane();
@@ -430,6 +454,12 @@ public class DD extends Application{
 		menu.getChildren().addAll(patronScene, libScene, adminScene);
 
 		//Button Actions
+		patronScene.setOnAction(e -> {
+			stage.setHeight(200);
+			stage.setWidth(500);
+			stage.setTitle("Dewey Decimator - Patron");
+			stage.setScene(patronView);
+		});
 		libScene.setOnAction(e -> {
 			stage.setHeight(600);
 			stage.setWidth(800);
