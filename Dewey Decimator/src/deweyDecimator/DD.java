@@ -63,7 +63,7 @@ public class DD extends Application{
 	private Scene createLogin() {
 		//Initialize Large Scale Layouts
 		BorderPane bpMaster = new BorderPane();
-		bpMaster.setStyle("-fx-background-color: #f5deb3");
+		bpMaster.setStyle("-fx-background-color: #5e5f66");
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 
