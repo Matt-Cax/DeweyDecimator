@@ -16,7 +16,6 @@ public class SQLConnection {
 			System.out.println(e.getMessage());
 		}
 	}
-	
 	// Select Statements
 	public void printAll(String table) {
 		try {
@@ -60,17 +59,18 @@ public class SQLConnection {
 	}
 	
 	public String findUserType(String userID) {
-		String query = "SELECT userType FROM LibraryUsers WHERE userID=" + userID;
+		String query = "SELECT userType FROM LibraryUser WHERE userID=" + userID;
+		//String query = "SELECT userType FROM LibraryUser";
+		//System.out.printf("Trying: %s\n", query);
 		Statement stmt;
 		try {
 			stmt = sql.createStatement();
 			ResultSet results = stmt.executeQuery(query);
 			
-			System.out.printf("User Type: %s", results.getString("userType"));
+			results.next();
 			
-			return results.getString("userType");
+			return results.getString(1);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

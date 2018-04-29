@@ -90,13 +90,13 @@ public class DD extends Application{
 		enter.setOnAction(e -> {
 			String loginID = userID.getText();
 			int userType = SQLManager.ERROR;
-			//If data isn't bad
-			if (!(loginID != null && !loginID.isEmpty()))
-				userType = sql.verifyLogin(loginID);
-				System.out.printf("from DD: %s\n", userType);
+			userType = sql.verifyLogin(loginID);
+			
 			switch(userType) {
 			case SQLManager.PATRON:
+				System.out.println("caught PATRON");
 				stage.setScene(patronView);
+				//System.out.println("SET PATRON");
 				break;
 			case SQLManager.LIBRARIAN:
 				stage.setScene(libView);

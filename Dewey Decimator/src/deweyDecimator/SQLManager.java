@@ -19,8 +19,9 @@ public class SQLManager {
 	public static final int ERROR = -4;
 	
 	public int verifyLogin(String loginID) {
+		System.out.println("verifying login");
 		String type = connection.findUserType(loginID);
-		System.out.printf("User Type: %s", type);
+		System.out.printf("User Type: %s\n", type);
 		switch(type) {
 		case "Patron":
 			return PATRON;
