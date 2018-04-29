@@ -88,11 +88,23 @@ public class SQLConnection {
 			
 			return results.getString(1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		return null;
 		
+	}
+	
+	public void setFines(String cardNumber, String fines) {
+		String update = "UPDATE Card SET totalfines=" + fines + " WHERE cardNumber=" + cardNumber;
+		Statement stmt;
+		
+		try {
+			stmt = sql.createStatement();
+			stmt.executeUpdate(update);
+		} catch (SQLException e) {
+			// nothing
+		}
 	}
 }
  

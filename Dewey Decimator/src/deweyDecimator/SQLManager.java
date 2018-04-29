@@ -37,4 +37,8 @@ public class SQLManager {
 	public String getFines(String cardNumber) {
 		return connection.getFines(cardNumber);
 	}
+	
+	public void setFines(String cardNumber, String fines) {
+		connection.setFines(cardNumber, fines);
+	}
 }

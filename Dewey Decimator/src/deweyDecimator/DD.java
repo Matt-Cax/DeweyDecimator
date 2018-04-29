@@ -276,10 +276,13 @@ public class DD extends Application{
 		
 		save.setOnAction(e -> {
 			// get card number
+			String cn = cardNumTF.getText();
 			
 			// get fines
+			String f = finesTF.getText();
 			
 			// save (SQL)
+			sql.setFines(cn, f);
 		});
 		
 		
