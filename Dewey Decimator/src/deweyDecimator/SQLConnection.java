@@ -152,7 +152,7 @@ public class SQLConnection {
 			idcn.add(CN);
 			
 		} catch (SQLException e) {
-			//nothing
+			System.out.println("add User failed");
 		}
 		
 		return idcn;
@@ -177,7 +177,7 @@ public class SQLConnection {
 			}
 			
 		} catch (SQLException e) {
-			//nothing
+			System.out.println("get current IDs failed");
 		}
 		
 		return IDs;
@@ -201,6 +201,7 @@ public class SQLConnection {
 			}
 			
 		} catch (SQLException e) {
+			System.out.println("get current CNs failed");
 			//nothing
 		}
 		
@@ -208,13 +209,17 @@ public class SQLConnection {
 	}
 	
 	public void addCard(int cn) {
-		String insert = "INSERT INTO Card VALUES (" + cn + ", " + "0.00, '2018-01-01'";
+		String insert = "INSERT INTO Card VALUES (" + cn + ", " + "0.00, '2018-01-01')";
+		//System.out.println("Trying: " + insert);
 		try {
 			Statement stmt = sql.createStatement();
-			stmt.executeQuery(insert);
+			stmt.executeUpdate(insert);
+			
+			System.out.println("User and Card added");
 			
 		} catch (SQLException e) {
 			System.out.println("Add card failed");
+			System.out.println(e.getMessage());
 		}
 	}
 }
