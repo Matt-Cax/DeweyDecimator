@@ -128,6 +128,11 @@ public class DD extends Application{
 				+ "-fx-background-color: #5e5f66; -fx-border-radius: 8 8 8 8");
 		checkOut.setPadding(new Insets(0, 0, 0, 15));
 		
+		GridPane checkOutGrid = new GridPane();
+		checkOutGrid.setVgap(2);
+		checkOutGrid.setHgap(10);
+		checkOutGrid.getColumnConstraints().add(new ColumnConstraints(50));
+		
 		//Launch Scene
 		bpMaster.setTop(menu);
 		bpMaster.setCenter(options);
