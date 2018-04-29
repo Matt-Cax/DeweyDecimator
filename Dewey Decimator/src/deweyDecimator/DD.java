@@ -333,7 +333,7 @@ public class DD extends Application{
 			String pn = phoneNumTF.getText();
 			
 			// feed to SQL
-			sql.addUser(fn, ln, ad, pn,"patron");
+			sql.addUser(fn, ln, ad, pn,"Patron");
 		});
 
 		create.setOnAction(e -> {
