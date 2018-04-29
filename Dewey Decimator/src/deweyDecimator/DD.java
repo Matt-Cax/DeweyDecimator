@@ -1,5 +1,7 @@
 package deweyDecimator;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -16,8 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-//import
 
 public class DD extends Application{
 
@@ -48,6 +48,9 @@ public class DD extends Application{
 		this.fines = fines;
 		this.addAdmin = addAdmin;
 		this.addLib = addLib;
+		
+		// populate from database
+		
 
 		//Launch Program
 		stage.setHeight(600);
@@ -85,12 +88,13 @@ public class DD extends Application{
 		enter.setOnAction(e -> {
 			String loginID = userID.getText();
 			int userType = SQLManager.ERROR;
-			//If data isn't bad
-			if (!(loginID != null && !loginID.isEmpty()))
-				userType = sql.verifyLogin(loginID);
+			userType = sql.verifyLogin(loginID);
+			
 			switch(userType) {
 			case SQLManager.PATRON:
+				System.out.println("caught PATRON");
 				stage.setScene(patronView);
+				//System.out.println("SET PATRON");
 				break;
 			case SQLManager.LIBRARIAN:
 				stage.setScene(libView);
@@ -253,6 +257,30 @@ public class DD extends Application{
 		grid.add(search, 2, 1);
 		grid.add(save, 2, 2);
 		
+
+		//TODO: back button?
+		
+		//Button Actions
+		search.setOnAction(e -> {
+			//get card number
+			String cn = cardNumTF.getText();
+			
+			//pull fines (SQL)
+			String f = sql.getFines(cn);
+			finesTF.setText(f);
+		});
+		
+		save.setOnAction(e -> {
+			// get card number
+			String cn = cardNumTF.getText();
+			
+			// get fines
+			String f = finesTF.getText();
+			
+			// save (SQL)
+			sql.setFines(cn, f);
+		});
+		
 		save.setOnAction(e -> {
 			sql.addFines(Integer.parseInt(cardNumTF.getText()), Double.parseDouble(finesTF.getText()));
 		});
@@ -296,6 +324,17 @@ public class DD extends Application{
 		grid.add(phoneNumTF, 1, 3);
 		Button create = new Button("Create");
 		grid.add(create, 1, 4);
+		
+		create.setOnAction(e -> {
+			//get info
+			String fn = firstNameTF.getText();
+			String ln = lastNameTF.getText();
+			String ad = addressTF.getText();
+			String pn = phoneNumTF.getText();
+			
+			// feed to SQL
+			sql.addUser(fn, ln, ad, pn,"patron");
+		});
 
 		create.setOnAction(e -> {
 			sql.addPatron(firstNameTF.getText(), lastNameTF.getText(), addressTF.getText(), phoneNumTF.getText());
@@ -409,6 +448,7 @@ public class DD extends Application{
 
 
 	public static void main(String[] args) {
+		
 		launch(args);
 	}
 
