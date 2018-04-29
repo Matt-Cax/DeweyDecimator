@@ -33,4 +33,8 @@ public class SQLManager {
 		}
 		return ERROR;
 	}
+	
+	public String getFines(String cardNumber) {
+		return connection.getFines(cardNumber);
+	}
 }

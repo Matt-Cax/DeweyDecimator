@@ -261,6 +261,28 @@ public class DD extends Application{
 		grid.add(finesTF, 1, 1);
 		grid.add(search, 2, 1);
 		grid.add(save, 2, 2);
+		
+		//TODO: back button?
+		
+		//Button Actions
+		search.setOnAction(e -> {
+			//get card number
+			String cn = cardNumTF.getText();
+			
+			//pull fines (SQL)
+			String f = sql.getFines(cn);
+			finesTF.setText(f);
+		});
+		
+		save.setOnAction(e -> {
+			// get card number
+			
+			// get fines
+			
+			// save (SQL)
+		});
+		
+		
 
 		Scene finesScene = new Scene(grid);
 		return finesScene;

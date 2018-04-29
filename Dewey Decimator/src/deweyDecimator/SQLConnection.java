@@ -76,5 +76,23 @@ public class SQLConnection {
 		
 		return null;
 	}
+	
+	public String getFines(String cardNumber) {
+		String query = "SELECT totalfines FROM Card WHERE cardNumber=" + cardNumber;
+		Statement stmt;
+		try {
+			stmt = sql.createStatement();
+			ResultSet results = stmt.executeQuery(query);
+			
+			results.next();
+			
+			return results.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
 }
  
