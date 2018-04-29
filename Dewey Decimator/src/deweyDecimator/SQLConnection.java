@@ -60,11 +60,14 @@ public class SQLConnection {
 	}
 	
 	public String findUserType(String userID) {
-		String query = "SELECT userType FROM LibraryUsers WHERE userID==" + userID;
+		String query = "SELECT userType FROM LibraryUsers WHERE userID=" + userID;
 		Statement stmt;
 		try {
 			stmt = sql.createStatement();
 			ResultSet results = stmt.executeQuery(query);
+			
+			System.out.printf("User Type: %s", results.getString("userType"));
+			
 			return results.getString("userType");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

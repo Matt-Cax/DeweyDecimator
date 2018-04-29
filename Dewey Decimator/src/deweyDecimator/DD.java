@@ -93,7 +93,7 @@ public class DD extends Application{
 			//If data isn't bad
 			if (!(loginID != null && !loginID.isEmpty()))
 				userType = sql.verifyLogin(loginID);
-				System.out.println();
+				System.out.printf("from DD: %s\n", userType);
 			switch(userType) {
 			case SQLManager.PATRON:
 				stage.setScene(patronView);

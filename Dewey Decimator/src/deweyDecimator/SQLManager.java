@@ -20,7 +20,7 @@ public class SQLManager {
 	
 	public int verifyLogin(String loginID) {
 		String type = connection.findUserType(loginID);
-		
+		System.out.printf("User Type: %s", type);
 		switch(type) {
 		case "Patron":
 			return PATRON;
@@ -30,8 +30,6 @@ public class SQLManager {
 			return ADMIN; 
 				
 		}
-				
 		return ERROR;
 	}
-
 }
