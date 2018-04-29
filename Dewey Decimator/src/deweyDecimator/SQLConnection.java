@@ -21,6 +21,7 @@ public class SQLConnection {
 	public void printAll(String table) {
 		try {
 			String query = "SELECT * FROM " + table;
+			//String query = "SELECT * FROM LibraryUser WHERE userID = 101";
 			
 			//SQL statement object
 			Statement stmt = sql.createStatement();
@@ -37,7 +38,7 @@ public class SQLConnection {
 				if (i == numCols) {
 					System.out.println(rsmd.getColumnLabel(i));
 				} else {
-					System.out.println(rsmd.getColumnLabel(i) + ", ");
+					System.out.print(rsmd.getColumnLabel(i) + ", ");
 				}
 			}
 			
@@ -48,7 +49,7 @@ public class SQLConnection {
 					if(i==numCols) {
 						System.out.println(nextVal);
 					} else {
-						System.out.println(nextVal + ", ");
+						System.out.print(nextVal + ", ");
 					}
 				}
 			}
@@ -56,6 +57,21 @@ public class SQLConnection {
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	public String findUserType(String userID) {
+		String query = "SELECT userType FROM LibraryUsers WHERE userID==" + userID;
+		Statement stmt;
+		try {
+			stmt = sql.createStatement();
+			ResultSet results = stmt.executeQuery(query);
+			return results.getString("userType");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }
  

@@ -1,5 +1,7 @@
 package deweyDecimator;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -17,8 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-//import
 
 public class DD extends Application{
 
@@ -49,6 +49,9 @@ public class DD extends Application{
 		this.fines = fines;
 		this.addAdmin = addAdmin;
 		this.addLib = addLib;
+		
+		// populate from database
+		
 
 		//Launch Program
 		stage.setHeight(600);
@@ -90,6 +93,7 @@ public class DD extends Application{
 			//If data isn't bad
 			if (!(loginID != null && !loginID.isEmpty()))
 				userType = sql.verifyLogin(loginID);
+				System.out.println();
 			switch(userType) {
 			case SQLManager.PATRON:
 				stage.setScene(patronView);
@@ -406,11 +410,6 @@ public class DD extends Application{
 
 
 	public static void main(String[] args) {
-		String url = "jdbc:mysql://localhost:3306/deweydecimator";
-		String user = "root";
-		String pass = "toor";
-		SQLConnection connection = new SQLConnection(url, user, pass);
-		connection.printAll("Book");
 		
 		launch(args);
 	}
