@@ -53,31 +53,4 @@ public class SQLManager {
 		connection.addCard(CN);
 		
 	}
-	public void addAdmin(String firstName, String lastName) {
-		// TODO
-		// Should also insert a new userID, I don't know how to check current DB for highest number tho to add 1 to it
-		// INSERT INTO LibraryUsers(userID,name,userType) VALUES (oldID+1, firstName + " " + lastName, 'Administrator')
-	}
-	
-	public void addLib(String firstName, String lastName) {
-		// TODO
-		// Should also insert a new userID, I don't know how to check current DB for highest number tho to add 1 to it
-		// INSERT INTO LibraryUsers(userID,name,userType) VALUES (oldID+1, firstName + " " + lastName, 'Librarian')
-	}
-	
-	public void addPatron(String firstName, String lastName, String address, String phoneNum) {
-		// TODO
-		// Should also insert a new userID, I don't know how to check current DB for highest number tho to add 1 to it
-		// INSERT INTO LibraryUsers(userID,name,address,phone,userType) VALUES (oldID+1, firstName + " " + lastName, address, phoneNum, 'Patron')
-	}
-	
-	public void addFines(int cardNumber, double fines) {
-		// TODO
-		// Should also insert a new loanNumber, I don't know how to check current DB for highest number tho to add 1 to it
-		// INSER INTO Loans(loanNumber, cardNumber, fine) VALUES (oldLN+1, cardNumber, fine)
-	}
-	
-	public void searchCard() {
-		
-	}
 }
