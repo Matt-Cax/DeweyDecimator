@@ -220,14 +220,20 @@ public class DD extends Application{
 		});
 		
 		out.setOnAction(e -> {
-			//get bookid
 			String bookid = bookCOTF.getText();
-			
-			//get patronid
 			String uid = patronCOTF.getText();
 			
 			//create loan associated with card
-			sql.createLoan(bookid, uid);
+			sql.checkOut(bookid, uid);
+		});
+		
+		in.setOnAction(e -> {
+			String bookid = bookCITF.getText();
+			String uid = patronCITF.getText();
+			
+			//delete loan associated with card
+			sql.checkIn(bookid, uid);
+			
 		});
 
 		//Launch Scene

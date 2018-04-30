@@ -184,7 +184,7 @@ public class SQLConnection {
 		int loanid = getUnique("loanNumber", "Loan");
 		
 		String insert = "INSERT INTO Loan VALUES (" + loanid + ", " + resourceID + ", " + cardNumber 
-				+ ",  '2018-01-01', '2018-07-01', 0.00";
+				+ ",  '2018-01-01', '2018-07-01', 0.00)";
 		
 		try {
 			Statement stmt = sql.createStatement();
@@ -193,6 +193,21 @@ public class SQLConnection {
 			System.out.println("Loan added");
 		} catch (SQLException e) {
 			System.out.println("Failed to create loan");
+			e.printStackTrace();
+		}
+	}
+	
+	public void delete(String table, String searchcol, String searchval) {
+		String deletestring = "DELETE FROM " + table + " WHERE " + searchcol + "=" + searchval;
+		
+		try {
+			sql.setAutoCommit(false);
+			Statement deletestatement = sql.createStatement();
+			deletestatement.executeUpdate(deletestring);
+			
+			//commit
+			sql.commit();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

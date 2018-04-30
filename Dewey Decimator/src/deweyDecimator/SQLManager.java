@@ -55,11 +55,26 @@ public class SQLManager {
 		
 	}
 	
-	public void createLoan(String resourceID, String patronID) {
+	public void checkOut(String resourceID, String patronID) {
 		//get cardNumber from patronID
 		String cardNumber = connection.find("cardNumber", "LibraryUser", "userID", patronID);
 		
 		//create loan
 		connection.createLoan(resourceID, cardNumber);
+		
+		System.out.println("Checked out successfully");
+	}
+	
+	public void checkIn(String resourceID, String patronID) {
+		//get cardNumber from patronID
+		String cardNumber = connection.find("cardNumber", "LibraryUser", "userID", patronID);
+		
+		//get loanid
+		String loanid = connection.find("loanNumber", "Loan", "resourceID", resourceID);
+		
+		//delete loan
+		connection.delete("Loan", "resourceID", resourceID);
+		
+		System.out.println("Checked in successfully");
 	}
 }
