@@ -11,8 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -177,22 +176,34 @@ public class DD extends Application{
 		
 		searchBar.getChildren().addAll(searchGrid, search, radioButtons); // adds searchgrid, search button, and radiobuttons vbox to the searchbar
 		
-		// Results table
-		TableView resultsTable = new TableView();
-		Label tableLabel = new Label("Search Results:");
-		resultsTable.setEditable(false);
+		//Results section box
+		TextArea searchOutput = new TextArea();
+		searchOutput.setEditable(false);
+		VBox outputVbox = new VBox(searchOutput);
+	
+		options.getChildren().addAll(searchBar, outputVbox); // 
 		
-		TableColumn isbnColumn = new TableColumn("ISBN");
-		TableColumn titleColumn = new TableColumn("Title");
-		TableColumn authorColumn = new TableColumn("Author");
-		TableColumn publisherColumn = new TableColumn("Publisher");
-		TableColumn pubDateColumn = new TableColumn("Publication Date");
-		TableColumn mediumColumn = new TableColumn("Medium");
-		TableColumn genreColumn = new TableColumn("Genre");
 		
-		resultsTable.getColumns().addAll(isbnColumn, titleColumn, authorColumn, publisherColumn, pubDateColumn, mediumColumn, genreColumn);
+		search.setOnAction(e -> 
+		{
+			if(searchType.getSelectedToggle() == author)
+			{
+				
+			}
+			else if(searchType.getSelectedToggle() == title)
+			{
+				
+			}
+			else if(searchType.getSelectedToggle() == isbn)
+			{
+				
+			}
+			else
+			{
+				searchOutput.setText("Error: no search type selected");
+			}
+		});
 		
-		options.getChildren().addAll(searchBar, resultsTable); // 
 		
 		//Launch Scene
 		bpMaster.setTop(menu);
