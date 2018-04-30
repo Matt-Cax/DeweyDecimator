@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 public class DD extends Application{
 
 	private SQLManager sql = new SQLManager();
+	private int currentUser = 0;
 	private Stage stage;
 	private Scene patronView;
 	private Scene libView;
@@ -104,18 +105,21 @@ public class DD extends Application{
 			switch(userType) {
 			case SQLManager.PATRON:
 				//System.out.println("caught PATRON");
+				currentUser = userType;
 				stage.setHeight(600);
 				stage.setWidth(1000);
 				stage.setTitle("Dewey Decimator - Patron");
 				stage.setScene(patronView);
 				break;
 			case SQLManager.LIBRARIAN:
+				currentUser = userType;
 				stage.setHeight(600);
 				stage.setWidth(800);
 				stage.setTitle("Dewey Decimator - Librarian");
 				stage.setScene(libView);
 				break;
 			case SQLManager.ADMIN:
+				currentUser = userType;
 				stage.setHeight(200);
 				stage.setWidth(500);
 				stage.setTitle("Dewey Decimator - Administrator");
