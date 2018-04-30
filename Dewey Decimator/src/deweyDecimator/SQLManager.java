@@ -75,7 +75,7 @@ public class SQLManager {
 		System.out.println("Checked in successfully");
 	}
 	
-	public void addMedia() {
-		
+	public void addMedia(String la, String isbn, String t, String a, String p, String pd, String e, String b, String m, String g) {
+		connection.addMedia(la,isbn,t,a,p,pd,e,b,m,g);
 	}
 }

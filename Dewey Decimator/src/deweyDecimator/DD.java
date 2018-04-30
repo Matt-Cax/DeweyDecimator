@@ -478,7 +478,7 @@ public class DD extends Application{
 		TextField titleTF = new TextField("title");
 		TextField authorTF = new TextField("author name");
 		TextField publisherTF = new TextField("publisher");
-		TextField publicationdateTF = new TextField("'2018-01-01'");
+		TextField publicationdateTF = new TextField("2018-01-01");
 		TextField editionTF = new TextField("first edition");
 		TextField booktypeTF = new TextField("YA");
 		TextField mediumTF = new TextField("paper back");
@@ -524,7 +524,9 @@ public class DD extends Application{
 		
 		addButton.setOnAction(e -> {
 			// run SQL add
-			
+			sql.addMedia(libraryaddressTF.getText(), ISBNTF.getText(), titleTF.getText(), authorTF.getText(),
+					publisherTF.getText(), publicationdateTF.getText(), editionTF.getText(), booktypeTF.getText(),
+					mediumTF.getText(), genreTF.getText());
 			
 			//reset to librarian view
 			stage.setHeight(600);
