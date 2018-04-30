@@ -5,9 +5,15 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -56,7 +62,7 @@ public class DD extends Application{
 
 		//Launch Program
 		stage.setHeight(600);
-		stage.setWidth(800);
+		stage.setWidth(1000);
 		stage.setTitle("Dewey Decimator");
 		stage.setScene(login);
 		stage.show();
@@ -115,22 +121,65 @@ public class DD extends Application{
 	private Scene createPatronView()
 	{
 		BorderPane bpMaster = new BorderPane();
-		HBox menu = createTabs();
+		HBox menu = createTabs(); // adds the view tabs
 		
 		VBox options = new VBox(15);
 		options.setAlignment(Pos.CENTER);
 		options.setStyle("-fx-background-color: #5e5f66;");
 		options.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		HBox checkOut = new HBox(100);
-		checkOut.setAlignment(Pos.CENTER_LEFT);
-		checkOut.setStyle("-fx-border-color: #000000;"
+		HBox searchBar = new HBox(100);
+		searchBar.setAlignment(Pos.CENTER_LEFT);
+		searchBar.setStyle("-fx-border-color: #000000;"
 				+ "-fx-background-color: #5e5f66; -fx-border-radius: 8 8 8 8");
-		checkOut.setPadding(new Insets(0, 0, 0, 15));
+		searchBar.setPadding(new Insets(0, 0, 0, 15));
 		
-		GridPane checkOutGrid = new GridPane();
-		checkOutGrid.setVgap(2);
-		checkOutGrid.setHgap(10);
-		checkOutGrid.getColumnConstraints().add(new ColumnConstraints(50));
+		// 
+		GridPane searchGrid = new GridPane();
+		searchGrid.setVgap(2);
+		searchGrid.setHgap(10);
+		searchGrid.getColumnConstraints().add(new ColumnConstraints(50));
+		Text textCO = new Text("Search");
+		TextField searchCOTF = new TextField();
+		searchCOTF.setPrefSize(540, 10);
+		searchGrid.add(textCO, 0, 0);
+		searchGrid.add(searchCOTF, 1, 0);
+		Button search = new Button("SEARCH");
+		search.setPrefSize(100, 30);
+		
+		// This vbox contains the radiobuttons
+		VBox radioButtons = new VBox();
+		
+		ToggleGroup searchType = new ToggleGroup();
+		RadioButton author = new RadioButton("Author");
+		author.setToggleGroup(searchType);
+		//author.setSearchType("Author"); // TODO: CREATE "setSearchType" method
+		author.setSelected(true); // Author radio button is selected by default
+		RadioButton title = new RadioButton("Title");
+		title.setToggleGroup(searchType);
+		//title.setSearchType("Title"); // TODO: CREATE "setSearchType" method
+		RadioButton isbn = new RadioButton("ISBN");
+		isbn.setToggleGroup(searchType);
+		//isbn.setSearchType("ISBN"); // TODO: CREATE "setSearchType" method
+		radioButtons.getChildren().addAll(author, title, isbn); // adds buttons to the vbox
+		
+		searchBar.getChildren().addAll(searchGrid, search, radioButtons); // adds searchgrid, search button, and radiobuttons vbox to the searchbar
+		
+		// Results table
+		TableView resultsTable = new TableView();
+		Label tableLabel = new Label("Search Results:");
+		resultsTable.setEditable(false);
+		
+		TableColumn isbnColumn = new TableColumn("ISBN");
+		TableColumn titleColumn = new TableColumn("Title");
+		TableColumn authorColumn = new TableColumn("Author");
+		TableColumn publisherColumn = new TableColumn("Publisher");
+		TableColumn pubDateColumn = new TableColumn("Publication Date");
+		TableColumn mediumColumn = new TableColumn("Medium");
+		TableColumn genreColumn = new TableColumn("Genre");
+		
+		resultsTable.getColumns().addAll(isbnColumn, titleColumn, authorColumn, publisherColumn, pubDateColumn, mediumColumn, genreColumn);
+		
+		options.getChildren().addAll(searchBar, resultsTable); // 
 		
 		//Launch Scene
 		bpMaster.setTop(menu);
@@ -466,8 +515,8 @@ public class DD extends Application{
 
 		//Button Actions
 		patronScene.setOnAction(e -> {
-			stage.setHeight(200);
-			stage.setWidth(500);
+			stage.setHeight(600);
+			stage.setWidth(1000);
 			stage.setTitle("Dewey Decimator - Patron");
 			stage.setScene(patronView);
 		});
