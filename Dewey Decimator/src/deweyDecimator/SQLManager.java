@@ -66,15 +66,16 @@ public class SQLManager {
 	}
 	
 	public void checkIn(String resourceID, String patronID) {
-		//get cardNumber from patronID
-		String cardNumber = connection.find("cardNumber", "LibraryUser", "userID", patronID);
-		
 		//get loanid
 		String loanid = connection.find("loanNumber", "Loan", "resourceID", resourceID);
 		
 		//delete loan
-		connection.delete("Loan", "resourceID", resourceID);
+		connection.delete("Loan", "loanNumber", loanid);
 		
 		System.out.println("Checked in successfully");
+	}
+	
+	public void addMedia() {
+		
 	}
 }
