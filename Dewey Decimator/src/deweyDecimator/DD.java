@@ -8,6 +8,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -56,7 +58,7 @@ public class DD extends Application{
 
 		//Launch Program
 		stage.setHeight(600);
-		stage.setWidth(800);
+		stage.setWidth(1000);
 		stage.setTitle("Dewey Decimator");
 		stage.setScene(login);
 		stage.show();
@@ -139,7 +141,22 @@ public class DD extends Application{
 		searchGrid.add(searchCOTF, 1, 0);
 		Button search = new Button("SEARCH");
 		search.setPrefSize(100, 30);
-		searchBar.getChildren().addAll(searchGrid, search);
+		
+		VBox radioButtons = new VBox();
+		
+		ToggleGroup searchType = new ToggleGroup();
+		RadioButton author = new RadioButton("Author");
+		author.setToggleGroup(searchType);
+		//author.setSearchType("Author"); // TODO: CREATE "setSearchType" method
+		author.setSelected(true);
+		RadioButton title = new RadioButton("Title");
+		title.setToggleGroup(searchType);
+		//title.setSearchType("Title"); // TODO: CREATE "setSearchType" method
+		RadioButton isbn = new RadioButton("ISBN");
+		isbn.setToggleGroup(searchType);
+		//isbn.setSearchType("ISBN"); // TODO: CREATE "setSearchType" method
+		radioButtons.getChildren().addAll(author, title, isbn);
+		searchBar.getChildren().addAll(searchGrid, search, radioButtons);
 		
 		options.getChildren().addAll(searchBar);
 		
@@ -471,7 +488,7 @@ public class DD extends Application{
 		//Button Actions
 		patronScene.setOnAction(e -> {
 			stage.setHeight(600);
-			stage.setWidth(800);
+			stage.setWidth(1000);
 			stage.setTitle("Dewey Decimator - Patron");
 			stage.setScene(patronView);
 		});
