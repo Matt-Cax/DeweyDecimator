@@ -195,7 +195,6 @@ public class SQLConnection {
 			System.out.println("Failed to create loan");
 			e.printStackTrace();
 		}
-		
 	}
 	
 	
