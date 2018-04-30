@@ -59,8 +59,8 @@ public class SQLConnection {
 		}
 	}
 	
-	public String findUserType(String userID) {
-		String query = "SELECT userType FROM LibraryUser WHERE userID=" + userID;
+	public String find(String findcol, String table, String searchcol, String testval) {
+		String query = "SELECT " + findcol + " FROM " + table + " WHERE " + searchcol + " = " + testval;
 		//String query = "SELECT userType FROM LibraryUser";
 		//System.out.printf("Trying: %s\n", query);
 		Statement stmt;
@@ -78,26 +78,8 @@ public class SQLConnection {
 		return null;
 	}
 	
-	public String getFines(String cardNumber) {
-		String query = "SELECT totalfines FROM Card WHERE cardNumber=" + cardNumber;
-		Statement stmt;
-		try {
-			stmt = sql.createStatement();
-			ResultSet results = stmt.executeQuery(query);
-			
-			results.next();
-			
-			return results.getString(1);
-		} catch (SQLException e) {
-			//e.printStackTrace();
-		}
-		
-		return null;
-		
-	}
-	
-	public void setFines(String cardNumber, String fines) {
-		String update = "UPDATE Card SET totalfines=" + fines + " WHERE cardNumber=" + cardNumber;
+	public void set(String table, String setcol, String setval, String searchcol, String searchval) {
+		String update = "UPDATE " +  table + " SET " + setcol + "=" + setval + " WHERE " + searchcol + "=" + searchval;
 		Statement stmt;
 		
 		try {
@@ -110,26 +92,10 @@ public class SQLConnection {
 	
 	public ArrayList<Integer> addUser(String f, String l, String a, String p, String level) {
 		// find unique UserID
-		ArrayList<String> IDs = currentIDs();
-		int maxi=0;
-		for(int i=0; i<IDs.size(); i++) {
-			if(Integer.parseInt(IDs.get(i)) > maxi) {
-				maxi = Integer.parseInt(IDs.get(i));
-			}
-		}
-		
-		int ID = maxi + 1;
+		int ID = getUnique("userID", "LibraryUser");
 		
 		// find unique card number
-		ArrayList<String> CNs = currentCNs();
-		int maxc=0;
-		for(int i=0; i<CNs.size(); i++) {
-			if(Integer.parseInt(CNs.get(i)) > maxc) {
-				maxc = Integer.parseInt(CNs.get(i));
-			}
-		}
-		
-		int CN = maxc + 1;
+		int CN = getUnique("cardNumber", "LibraryUser");
 		
 		ArrayList<Integer> idcn = new ArrayList<Integer>();
 		
@@ -159,10 +125,10 @@ public class SQLConnection {
 		
 	}
 	
-	public ArrayList<String> currentIDs() {
-		ArrayList<String> IDs = new ArrayList<String>();
+	public ArrayList<String> getCurrent(String col, String table) {
+		ArrayList<String> current = new ArrayList<String>();
 		try {
-			String query = "SELECT userID FROM LibraryUser";
+			String query = "SELECT " + col + " FROM " + table;
 			Statement stmt = sql.createStatement();
 			ResultSet results = stmt.executeQuery(query);
 			
@@ -172,40 +138,30 @@ public class SQLConnection {
 			while(results.next()) {
 				for(int i=1; i<= numCols; i++) {
 					String nextVal = results.getString(i);
-					IDs.add(nextVal);
+					current.add(nextVal);
 				}
 			}
 			
 		} catch (SQLException e) {
-			System.out.println("get current IDs failed");
-		}
-		
-		return IDs;
-	}
-	
-	public ArrayList<String> currentCNs() {
-		ArrayList<String> CNs = new ArrayList<String>();
-		try {
-			String query = "SELECT cardNumber FROM LibraryUser";
-			Statement stmt = sql.createStatement();
-			ResultSet results = stmt.executeQuery(query);
-			
-			ResultSetMetaData rsmd = results.getMetaData();
-			int numCols = rsmd.getColumnCount();
-			
-			while(results.next()) {
-				for(int i=1; i<= numCols; i++) {
-					String nextVal = results.getString(i);
-					CNs.add(nextVal);
-				}
-			}
-			
-		} catch (SQLException e) {
-			System.out.println("get current CNs failed");
+			System.out.println("get current" + col + " failed");
 			//nothing
 		}
 		
-		return CNs;
+		return current;
+	}
+	
+	public int getUnique(String col, String table) {
+		
+		ArrayList<String> A = getCurrent(col, table);
+		
+		int max=0;
+		for(int i=0; i<A.size(); i++) {
+			if(Integer.parseInt(A.get(i)) > max) {
+				max = Integer.parseInt(A.get(i));
+			}
+		}
+		
+		return max + 1;
 	}
 	
 	public void addCard(int cn) {
@@ -222,5 +178,40 @@ public class SQLConnection {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	public void createLoan(String resourceID, String cardNumber) {
+		//get unique loanid
+		int loanid = getUnique("loanNumber", "Loan");
+		
+		String insert = "INSERT INTO Loan VALUES (" + loanid + ", " + resourceID + ", " + cardNumber 
+				+ ",  '2018-01-01', '2018-07-01', 0.00)";
+		
+		try {
+			Statement stmt = sql.createStatement();
+			stmt.executeUpdate(insert);
+			
+			System.out.println("Loan added");
+		} catch (SQLException e) {
+			System.out.println("Failed to create loan");
+			e.printStackTrace();
+		}
+	}
+	
+	public void delete(String table, String searchcol, String searchval) {
+		String deletestring = "DELETE FROM " + table + " WHERE " + searchcol + "=" + searchval;
+		
+		try {
+			sql.setAutoCommit(false);
+			Statement deletestatement = sql.createStatement();
+			deletestatement.executeUpdate(deletestring);
+			
+			//commit
+			sql.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
  
