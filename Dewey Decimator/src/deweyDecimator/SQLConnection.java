@@ -178,21 +178,6 @@ public class SQLConnection {
 		}
 	}
 	
-public void addCard(int cn) {
-		String insert = "INSERT INTO Card VALUES (" + cn + ", " + "0.00, '2018-01-01')";
-		//System.out.println("Trying: " + insert);
-		try {
-			Statement stmt = sql.createStatement();
-			stmt.executeUpdate(insert);
-			
-			System.out.println("User and Card added");
-			
-		} catch (SQLException e) {
-			System.out.println("Add card failed");
-			System.out.println(e.getMessage());
-		}
-	}
-	
 	public void createLoan(String resourceID, String cardNumber) {
 		//get unique loanid
 		int loanid = getUnique("loanNumber", "Loan");
