@@ -175,11 +175,31 @@ public class DD extends Application{
 		//Results section box
 		TextArea searchOutput = new TextArea();
 		searchOutput.setEditable(false);
-		
 		VBox outputVbox = new VBox(searchOutput);
-		
-		
+	
 		options.getChildren().addAll(searchBar, outputVbox); // 
+		
+		
+		search.setOnAction(e -> 
+		{
+			if(searchType.getSelectedToggle() == author)
+			{
+				
+			}
+			else if(searchType.getSelectedToggle() == title)
+			{
+				
+			}
+			else if(searchType.getSelectedToggle() == isbn)
+			{
+				
+			}
+			else
+			{
+				searchOutput.setText("Error: no search type selected");
+			}
+		});
+		
 		
 		//Launch Scene
 		bpMaster.setTop(menu);
