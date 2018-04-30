@@ -163,6 +163,7 @@ public class DD extends Application{
 		
 		searchBar.getChildren().addAll(searchGrid, search, radioButtons); // adds searchgrid, search button, and radiobuttons vbox to the searchbar
 		
+		//Results section
 		TextArea searchOutput = new TextArea();
 		searchOutput.setEditable(false);
 		
