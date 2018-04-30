@@ -1,6 +1,7 @@
 package deweyDecimator;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class SQLManager {
 	
@@ -40,5 +41,16 @@ public class SQLManager {
 	
 	public void setFines(String cardNumber, String fines) {
 		connection.setFines(cardNumber, fines);
+	}
+	
+	public void addUser(String f, String l, String a, String p, String level) {
+		//add user
+		ArrayList<Integer> idcn = connection.addUser(f,l,a,p,level);
+		int ID = idcn.get(0);
+		int CN = idcn.get(1);
+		
+		//create corresponding card
+		connection.addCard(CN);
+		
 	}
 }

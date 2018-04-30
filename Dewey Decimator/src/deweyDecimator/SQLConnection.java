@@ -1,6 +1,7 @@
 package deweyDecimator;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class SQLConnection {
 	Connection sql;
@@ -104,6 +105,116 @@ public class SQLConnection {
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
 			// nothing
+		}
+	}
+	
+	public ArrayList<Integer> addUser(String f, String l, String a, String p, String level) {
+		// find unique UserID
+		ArrayList<String> IDs = currentIDs();
+		int maxi=0;
+		for(int i=0; i<IDs.size(); i++) {
+			if(Integer.parseInt(IDs.get(i)) > maxi) {
+				maxi = Integer.parseInt(IDs.get(i));
+			}
+		}
+		
+		int ID = maxi + 1;
+		
+		// find unique card number
+		ArrayList<String> CNs = currentCNs();
+		int maxc=0;
+		for(int i=0; i<CNs.size(); i++) {
+			if(Integer.parseInt(CNs.get(i)) > maxc) {
+				maxc = Integer.parseInt(CNs.get(i));
+			}
+		}
+		
+		int CN = maxc + 1;
+		
+		ArrayList<Integer> idcn = new ArrayList<Integer>();
+		
+		try {
+			String insert = "INSERT INTO LibraryUser VALUES (?, ?, ?, ?, ?, ?)";
+			PreparedStatement insertstatement = sql.prepareStatement(insert);
+			
+			insertstatement.setInt(1, ID);
+			insertstatement.setString(2, f + " " + l);
+			insertstatement.setString(3, a);
+			insertstatement.setString(4, p);
+			insertstatement.setString(5, level);
+			insertstatement.setInt(6, CN);
+			
+			insertstatement.executeUpdate();
+			
+			// prep for return
+			
+			idcn.add(ID);
+			idcn.add(CN);
+			
+		} catch (SQLException e) {
+			//nothing
+		}
+		
+		return idcn;
+		
+	}
+	
+	public ArrayList<String> currentIDs() {
+		ArrayList<String> IDs = new ArrayList<String>();
+		try {
+			String query = "SELECT userID FROM LibraryUser";
+			Statement stmt = sql.createStatement();
+			ResultSet results = stmt.executeQuery(query);
+			
+			ResultSetMetaData rsmd = results.getMetaData();
+			int numCols = rsmd.getColumnCount();
+			
+			while(results.next()) {
+				for(int i=1; i<= numCols; i++) {
+					String nextVal = results.getString(i);
+					IDs.add(nextVal);
+				}
+			}
+			
+		} catch (SQLException e) {
+			//nothing
+		}
+		
+		return IDs;
+	}
+	
+	public ArrayList<String> currentCNs() {
+		ArrayList<String> CNs = new ArrayList<String>();
+		try {
+			String query = "SELECT cardNumber FROM LibraryUser";
+			Statement stmt = sql.createStatement();
+			ResultSet results = stmt.executeQuery(query);
+			
+			ResultSetMetaData rsmd = results.getMetaData();
+			int numCols = rsmd.getColumnCount();
+			
+			while(results.next()) {
+				for(int i=1; i<= numCols; i++) {
+					String nextVal = results.getString(i);
+					CNs.add(nextVal);
+				}
+			}
+			
+		} catch (SQLException e) {
+			//nothing
+		}
+		
+		return CNs;
+	}
+	
+	public void addCard(int cn) {
+		String insert = "INSERT INTO Card VALUES (" + cn + ", " + "0.00, '2018-01-01'";
+		try {
+			Statement stmt = sql.createStatement();
+			stmt.executeQuery(insert);
+			
+		} catch (SQLException e) {
+			System.out.println("Add card failed");
 		}
 	}
 }

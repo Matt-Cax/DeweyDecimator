@@ -327,6 +327,17 @@ public class DD extends Application{
 		grid.add(phoneNumTF, 1, 3);
 		Button create = new Button("Create");
 		grid.add(create, 1, 4);
+		
+		create.setOnAction(e -> {
+			//get info
+			String fn = firstNameTF.getText();
+			String ln = lastNameTF.getText();
+			String ad = addressTF.getText();
+			String pn = phoneNumTF.getText();
+			
+			// feed to SQL
+			sql.addUser(fn, ln, ad, pn,"patron");
+		});
 
 
 		Scene addPatronScene = new Scene(grid);
