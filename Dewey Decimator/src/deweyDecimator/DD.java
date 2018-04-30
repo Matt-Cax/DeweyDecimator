@@ -118,7 +118,7 @@ public class DD extends Application{
 	private Scene createPatronView()
 	{
 		BorderPane bpMaster = new BorderPane();
-		HBox menu = createTabs();
+		HBox menu = createTabs(); // adds the view tabs
 		
 		VBox options = new VBox(15);
 		options.setAlignment(Pos.CENTER);
@@ -130,6 +130,7 @@ public class DD extends Application{
 				+ "-fx-background-color: #5e5f66; -fx-border-radius: 8 8 8 8");
 		searchBar.setPadding(new Insets(0, 0, 0, 15));
 		
+		// 
 		GridPane searchGrid = new GridPane();
 		searchGrid.setVgap(2);
 		searchGrid.setHgap(10);
@@ -142,23 +143,27 @@ public class DD extends Application{
 		Button search = new Button("SEARCH");
 		search.setPrefSize(100, 30);
 		
+		// This vbox contains the radiobuttons
 		VBox radioButtons = new VBox();
 		
 		ToggleGroup searchType = new ToggleGroup();
 		RadioButton author = new RadioButton("Author");
 		author.setToggleGroup(searchType);
 		//author.setSearchType("Author"); // TODO: CREATE "setSearchType" method
-		author.setSelected(true);
+		author.setSelected(true); // Author radio button is selected by default
 		RadioButton title = new RadioButton("Title");
 		title.setToggleGroup(searchType);
 		//title.setSearchType("Title"); // TODO: CREATE "setSearchType" method
 		RadioButton isbn = new RadioButton("ISBN");
 		isbn.setToggleGroup(searchType);
 		//isbn.setSearchType("ISBN"); // TODO: CREATE "setSearchType" method
-		radioButtons.getChildren().addAll(author, title, isbn);
-		searchBar.getChildren().addAll(searchGrid, search, radioButtons);
+		radioButtons.getChildren().addAll(author, title, isbn); // adds buttons to the vbox
 		
-		options.getChildren().addAll(searchBar);
+		searchBar.getChildren().addAll(searchGrid, search, radioButtons); // adds searchgrid, search button, and radiobuttons vbox to the searchbar
+		
+		// Results grid
+		
+		options.getChildren().addAll(searchBar); // 
 		
 		//Launch Scene
 		bpMaster.setTop(menu);
