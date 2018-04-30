@@ -78,6 +78,40 @@ public class SQLConnection {
 		return null;
 	}
 	
+	public String searchBooks(String searchType, String searchTerm)
+	{
+		String query = "SELECT * FROM Book WHERE " + searchType + "LIKE '%" + searchTerm + "%';";
+		// String query = SELECT * FROM BOOK WHERE author LIKE '%Dickens%';
+
+		try {
+			//SQL statement object
+			Statement stmt = sql.createStatement();
+			
+			//get results
+			ResultSet results = stmt.executeQuery(query);
+			
+			// set metadata (note indexing starts at 1)
+			ResultSetMetaData rsmd = results.getMetaData();
+			int numCols = rsmd.getColumnCount();
+			
+			// print column labels
+			for(int i=1; i<= numCols; i++) {
+				if (i == numCols) {
+					System.out.println(rsmd.getColumnLabel(i));
+				} else {
+					System.out.print(rsmd.getColumnLabel(i) + ", ");
+				}
+			}
+			return results.getString(1);
+		} 
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	public void set(String table, String setcol, String setval, String searchcol, String searchval) {
 		String update = "UPDATE " +  table + " SET " + setcol + "=" + setval + " WHERE " + searchcol + "=" + searchval;
 		Statement stmt;

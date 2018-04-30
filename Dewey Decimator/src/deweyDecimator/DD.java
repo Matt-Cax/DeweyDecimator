@@ -188,20 +188,22 @@ public class DD extends Application{
 		{
 			if(searchType.getSelectedToggle() == author)
 			{
-				
+				searchOutput.setText(sql.searchForBook("author", searchCOTF.getText()));
 			}
 			else if(searchType.getSelectedToggle() == title)
 			{
-				
+				searchOutput.setText(sql.searchForBook("title", searchCOTF.getText()));
 			}
 			else if(searchType.getSelectedToggle() == isbn)
 			{
-				
+				searchOutput.setText(sql.searchForBook("ISBN", searchCOTF.getText()));
 			}
 			else
 			{
 				searchOutput.setText("Error: no search type selected");
 			}
+			
+			//searchOutput.setText(sql.searchForBook("ISBN", searchCOTF.getText()));
 		});
 		
 		

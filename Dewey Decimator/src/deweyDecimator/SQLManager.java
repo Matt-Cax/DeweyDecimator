@@ -34,6 +34,11 @@ public class SQLManager {
 		}
 		return ERROR;
 	}
+	// calls the SQLConnection searchBooks method, which returns all tuples with attribute type that includes the search term
+	public String searchForBook(String type, String term)
+	{
+		return connection.searchBooks(type, term);
+	}
 	
 	public String getFines(String cardNumber) {
 		return connection.find("totalfines", "Card", "cardNumber", cardNumber);
