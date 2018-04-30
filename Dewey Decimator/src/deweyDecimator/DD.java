@@ -100,13 +100,22 @@ public class DD extends Application{
 			
 			switch(userType) {
 			case SQLManager.PATRON:
-				System.out.println("caught PATRON");
+				//System.out.println("caught PATRON");
+				stage.setHeight(600);
+				stage.setWidth(1000);
+				stage.setTitle("Dewey Decimator - Patron");
 				stage.setScene(patronView);
 				break;
 			case SQLManager.LIBRARIAN:
+				stage.setHeight(600);
+				stage.setWidth(800);
+				stage.setTitle("Dewey Decimator - Librarian");
 				stage.setScene(libView);
 				break;
 			case SQLManager.ADMIN:
+				stage.setHeight(200);
+				stage.setWidth(500);
+				stage.setTitle("Dewey Decimator - Administrator");
 				stage.setScene(adminView);
 				break;
 			}
@@ -313,13 +322,13 @@ public class DD extends Application{
 		vbox.getChildren().addAll(addAdminB, addLibB);
 
 		addAdminB.setOnAction(e -> {
-			stage.setHeight(200);
+			stage.setHeight(350);
 			stage.setWidth(500);
 			stage.setTitle("Add Aministrator");
 			stage.setScene(addAdmin);
 		});
 		addLibB.setOnAction(e -> {
-			stage.setHeight(200);
+			stage.setHeight(350);
 			stage.setWidth(500);
 			stage.setTitle("Add Librarian");
 			stage.setScene(addLib);
@@ -372,6 +381,12 @@ public class DD extends Application{
 			
 			// save (SQL)
 			sql.setFines(cn, f);
+			
+			//reset to librarian view
+			stage.setHeight(600);
+			stage.setWidth(800);
+			stage.setTitle("Dewey Decimator - Librarian");
+			stage.setScene(libView);
 		});
 
 		Scene finesScene = new Scene(grid);
@@ -423,6 +438,12 @@ public class DD extends Application{
 			
 			// feed to SQL
 			sql.addUser(fn, ln, ad, pn,"Patron");
+			
+			//reset to librarian view
+			stage.setHeight(600);
+			stage.setWidth(800);
+			stage.setTitle("Dewey Decimator - Librarian");
+			stage.setScene(libView);
 		});
 
 		Scene addPatronScene = new Scene(grid);
@@ -431,32 +452,54 @@ public class DD extends Application{
 
 	private Scene createAddAdmin() {
 		GridPane grid = new GridPane();
-		grid.setVgap(10);
-		grid.setHgap(10);
 		grid.setStyle("-fx-background-color: #5e5f66;");
-		grid.setPadding(new Insets(30, 50, 30, 50));
-		grid.setAlignment(Pos.TOP_CENTER);
-		ColumnConstraints c = new ColumnConstraints();
-		c.setHalignment(HPos.RIGHT);
-		grid.getColumnConstraints().addAll(new ColumnConstraints(),c);
+		grid.setVgap(5);
+		grid.setHgap(5);
+		grid.setPadding(new Insets(50, 15, 20, 15));
+		grid.setAlignment(Pos.CENTER);
+		ColumnConstraints c1 = new ColumnConstraints();
+		c1.setHalignment(HPos.CENTER);
+		ColumnConstraints c2 = new ColumnConstraints();
+		c2.setHalignment(HPos.RIGHT);
+		grid.getColumnConstraints().addAll(c1,c2);
 
 		Text firstName = new Text("First Name");
 		Text lastName = new Text("Last Name");
+		Text address = new Text("Address");
+		Text phoneNum = new Text("Phone #");
 		TextField firstNameTF = new TextField();
+		//firstNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField lastNameTF = new TextField();
+		//lastNameTF.setPrefWidth(Double.MAX_VALUE);
+		TextField addressTF = new TextField();
+		//addressTF.setPrefWidth(Double.MAX_VALUE);
+		TextField phoneNumTF = new TextField();
+		//phoneNumTF.setPrefWidth(Double.MAX_VALUE);
 		grid.add(firstName, 0, 0);
 		grid.add(lastName, 0, 1);
+		grid.add(address, 0, 2);
+		grid.add(phoneNum, 0, 3);
 		grid.add(firstNameTF, 1, 0);
 		grid.add(lastNameTF, 1, 1);
+		grid.add(addressTF, 1, 2);
+		grid.add(phoneNumTF, 1, 3);
 		Button create = new Button("Create");
-		grid.add(create, 1, 2);
-
+		grid.add(create, 1, 4);
+		
 		create.setOnAction(e -> {
+			//get info
+			String fn = firstNameTF.getText();
+			String ln = lastNameTF.getText();
+			String ad = addressTF.getText();
+			String pn = phoneNumTF.getText();
+			
+			// feed to SQL
+			sql.addUser(fn, ln, ad, pn,"Administrator");
+			
 			stage.setHeight(200);
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
-
 		});
 
 		Scene addAdminScene = new Scene(grid);
@@ -465,32 +508,56 @@ public class DD extends Application{
 
 	private Scene createAddLib() {
 		GridPane grid = new GridPane();
-		grid.setVgap(10);
-		grid.setHgap(10);
 		grid.setStyle("-fx-background-color: #5e5f66;");
-		grid.setPadding(new Insets(30, 50, 30, 50));
-		grid.setAlignment(Pos.TOP_CENTER);
-		ColumnConstraints c = new ColumnConstraints();
-		c.setHalignment(HPos.RIGHT);
-		grid.getColumnConstraints().addAll(new ColumnConstraints(),c);
+		grid.setVgap(5);
+		grid.setHgap(5);
+		grid.setPadding(new Insets(50, 15, 20, 15));
+		grid.setAlignment(Pos.CENTER);
+		ColumnConstraints c1 = new ColumnConstraints();
+		c1.setHalignment(HPos.CENTER);
+		ColumnConstraints c2 = new ColumnConstraints();
+		c2.setHalignment(HPos.RIGHT);
+		grid.getColumnConstraints().addAll(c1,c2);
 
 		Text firstName = new Text("First Name");
 		Text lastName = new Text("Last Name");
+		Text address = new Text("Address");
+		Text phoneNum = new Text("Phone #");
 		TextField firstNameTF = new TextField();
+		//firstNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField lastNameTF = new TextField();
+		//lastNameTF.setPrefWidth(Double.MAX_VALUE);
+		TextField addressTF = new TextField();
+		//addressTF.setPrefWidth(Double.MAX_VALUE);
+		TextField phoneNumTF = new TextField();
+		//phoneNumTF.setPrefWidth(Double.MAX_VALUE);
 		grid.add(firstName, 0, 0);
 		grid.add(lastName, 0, 1);
+		grid.add(address, 0, 2);
+		grid.add(phoneNum, 0, 3);
 		grid.add(firstNameTF, 1, 0);
 		grid.add(lastNameTF, 1, 1);
+		grid.add(addressTF, 1, 2);
+		grid.add(phoneNumTF, 1, 3);
 		Button create = new Button("Create");
-		grid.add(create, 1, 2);
-
+		grid.add(create, 1, 4);
+		
 		create.setOnAction(e -> {
+			//get info
+			String fn = firstNameTF.getText();
+			String ln = lastNameTF.getText();
+			String ad = addressTF.getText();
+			String pn = phoneNumTF.getText();
+			
+			// feed to SQL
+			sql.addUser(fn, ln, ad, pn,"Librarian");
+			
 			stage.setHeight(200);
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
 		});
+
 
 		Scene addLibScene = new Scene(grid);
 		return addLibScene;
