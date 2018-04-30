@@ -21,7 +21,7 @@ public class SQLManager {
 	
 	public int verifyLogin(String loginID) {
 		System.out.println("verifying login");
-		String type = connection.findUserType(loginID);
+		String type = connection.find("userType", "LibraryUser", "userID", loginID);
 		System.out.printf("User Type: %s\n", type);
 		switch(type) {
 		case "Patron":
@@ -36,11 +36,12 @@ public class SQLManager {
 	}
 	
 	public String getFines(String cardNumber) {
-		return connection.getFines(cardNumber);
+		return connection.find("totalfines", "Card", "cardNumber", cardNumber);
 	}
 	
 	public void setFines(String cardNumber, String fines) {
-		connection.setFines(cardNumber, fines);
+		//connection.setFines(cardNumber, fines);
+		connection.set("Card", "totalfines", fines, "cardNumber", cardNumber);
 	}
 	
 	public void addUser(String f, String l, String a, String p, String level) {
@@ -53,31 +54,27 @@ public class SQLManager {
 		connection.addCard(CN);
 		
 	}
-	public void addAdmin(String firstName, String lastName) {
-		// TODO
-		// Should also insert a new userID, I don't know how to check current DB for highest number tho to add 1 to it
-		// INSERT INTO LibraryUsers(userID,name,userType) VALUES (oldID+1, firstName + " " + lastName, 'Administrator')
-	}
 	
-	public void addLib(String firstName, String lastName) {
-		// TODO
-		// Should also insert a new userID, I don't know how to check current DB for highest number tho to add 1 to it
-		// INSERT INTO LibraryUsers(userID,name,userType) VALUES (oldID+1, firstName + " " + lastName, 'Librarian')
-	}
-	
-	public void addPatron(String firstName, String lastName, String address, String phoneNum) {
-		// TODO
-		// Should also insert a new userID, I don't know how to check current DB for highest number tho to add 1 to it
-		// INSERT INTO LibraryUsers(userID,name,address,phone,userType) VALUES (oldID+1, firstName + " " + lastName, address, phoneNum, 'Patron')
-	}
-	
-	public void addFines(int cardNumber, double fines) {
-		// TODO
-		// Should also insert a new loanNumber, I don't know how to check current DB for highest number tho to add 1 to it
-		// INSER INTO Loans(loanNumber, cardNumber, fine) VALUES (oldLN+1, cardNumber, fine)
-	}
-	
-	public void searchCard() {
+	public void checkOut(String resourceID, String patronID) {
+		//get cardNumber from patronID
+		String cardNumber = connection.find("cardNumber", "LibraryUser", "userID", patronID);
 		
+		//create loan
+		connection.createLoan(resourceID, cardNumber);
+		
+		System.out.println("Checked out successfully");
+	}
+	
+	public void checkIn(String resourceID, String patronID) {
+		//get cardNumber from patronID
+		String cardNumber = connection.find("cardNumber", "LibraryUser", "userID", patronID);
+		
+		//get loanid
+		String loanid = connection.find("loanNumber", "Loan", "resourceID", resourceID);
+		
+		//delete loan
+		connection.delete("Loan", "resourceID", resourceID);
+		
+		System.out.println("Checked in successfully");
 	}
 }

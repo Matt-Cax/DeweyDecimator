@@ -102,7 +102,6 @@ public class DD extends Application{
 			case SQLManager.PATRON:
 				System.out.println("caught PATRON");
 				stage.setScene(patronView);
-				//System.out.println("SET PATRON");
 				break;
 			case SQLManager.LIBRARIAN:
 				stage.setScene(libView);
@@ -273,6 +272,23 @@ public class DD extends Application{
 			stage.setTitle("Fines");
 			stage.setScene(fines);
 		});
+		
+		out.setOnAction(e -> {
+			String bookid = bookCOTF.getText();
+			String uid = patronCOTF.getText();
+			
+			//create loan associated with card
+			sql.checkOut(bookid, uid);
+		});
+		
+		in.setOnAction(e -> {
+			String bookid = bookCITF.getText();
+			String uid = patronCITF.getText();
+			
+			//delete loan associated with card
+			sql.checkIn(bookid, uid);
+			
+		});
 
 		//Launch Scene
 		bpMaster.setTop(menu);
@@ -335,7 +351,6 @@ public class DD extends Application{
 		grid.add(search, 2, 1);
 		grid.add(save, 2, 2);
 		
-
 		//TODO: back button?
 		
 		//Button Actions
@@ -357,10 +372,6 @@ public class DD extends Application{
 			
 			// save (SQL)
 			sql.setFines(cn, f);
-		});
-		
-		save.setOnAction(e -> {
-			sql.addFines(Integer.parseInt(cardNumTF.getText()), Double.parseDouble(finesTF.getText()));
 		});
 
 		Scene finesScene = new Scene(grid);
@@ -414,10 +425,6 @@ public class DD extends Application{
 			sql.addUser(fn, ln, ad, pn,"Patron");
 		});
 
-		create.setOnAction(e -> {
-			sql.addPatron(firstNameTF.getText(), lastNameTF.getText(), addressTF.getText(), phoneNumTF.getText());
-		});
-
 		Scene addPatronScene = new Scene(grid);
 		return addPatronScene;
 	}
@@ -449,7 +456,7 @@ public class DD extends Application{
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
-			sql.addAdmin(firstNameTF.getText(), lastNameTF.getText());
+
 		});
 
 		Scene addAdminScene = new Scene(grid);
@@ -483,7 +490,6 @@ public class DD extends Application{
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
-			sql.addLib(firstNameTF.getText(), lastNameTF.getText());
 		});
 
 		Scene addLibScene = new Scene(grid);
@@ -532,7 +538,6 @@ public class DD extends Application{
 
 
 	public static void main(String[] args) {
-		
 		launch(args);
 	}
 
