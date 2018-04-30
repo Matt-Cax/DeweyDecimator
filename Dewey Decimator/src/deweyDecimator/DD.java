@@ -218,6 +218,17 @@ public class DD extends Application{
 			stage.setTitle("Fines");
 			stage.setScene(fines);
 		});
+		
+		out.setOnAction(e -> {
+			//get bookid
+			String bookid = bookCOTF.getText();
+			
+			//get patronid
+			String uid = patronCOTF.getText();
+			
+			//create loan associated with card
+			sql.createLoan(bookid, uid);
+		});
 
 		//Launch Scene
 		bpMaster.setTop(menu);
@@ -467,7 +478,6 @@ public class DD extends Application{
 
 
 	public static void main(String[] args) {
-		
 		launch(args);
 	}
 

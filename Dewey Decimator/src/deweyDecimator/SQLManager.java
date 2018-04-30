@@ -21,7 +21,7 @@ public class SQLManager {
 	
 	public int verifyLogin(String loginID) {
 		System.out.println("verifying login");
-		String type = connection.findUserType(loginID);
+		String type = connection.find("userType", "LibraryUser", "userID", loginID);
 		System.out.printf("User Type: %s\n", type);
 		switch(type) {
 		case "Patron":
@@ -36,11 +36,12 @@ public class SQLManager {
 	}
 	
 	public String getFines(String cardNumber) {
-		return connection.getFines(cardNumber);
+		return connection.find("totalfines", "Card", "cardNumber", cardNumber);
 	}
 	
 	public void setFines(String cardNumber, String fines) {
-		connection.setFines(cardNumber, fines);
+		//connection.setFines(cardNumber, fines);
+		connection.set("Card", "totalfines", fines, "cardNumber", cardNumber);
 	}
 	
 	public void addUser(String f, String l, String a, String p, String level) {
@@ -52,5 +53,13 @@ public class SQLManager {
 		//create corresponding card
 		connection.addCard(CN);
 		
+	}
+	
+	public void createLoan(String resourceID, String patronID) {
+		//get cardNumber from patronID
+		String cardNumber = connection.find("cardNumber", "LibraryUser", "userID", patronID);
+		
+		//create loan
+		connection.createLoan(resourceID, cardNumber);
 	}
 }
