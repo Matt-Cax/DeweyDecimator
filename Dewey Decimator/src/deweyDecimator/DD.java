@@ -38,6 +38,7 @@ public class DD extends Application{
 	private Scene addAdmin;
 	private Scene addLib;
 	private Scene addMedia;
+	private Scene editMedia;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -52,6 +53,7 @@ public class DD extends Application{
 		Scene addAdmin = createAddAdmin();
 		Scene addLib = createAddLib();
 		Scene addMedia = createAddMedia();
+		Scene editMedia = createEditMedia();
 		this.patronView = patronView;
 		this.libView = libView;
 		this.adminView = adminView;
@@ -60,9 +62,7 @@ public class DD extends Application{
 		this.addAdmin = addAdmin;
 		this.addLib = addLib;
 		this.addMedia = addMedia;
-		
-		// populate from database
-		
+		this.editMedia = editMedia;		
 
 		//Launch Program
 		stage.setHeight(600);
@@ -302,6 +302,12 @@ public class DD extends Application{
 			stage.setTitle("Fines");
 			stage.setScene(fines);
 		});
+		editMediaB.setOnAction(e -> {
+			stage.setHeight(600);
+			stage.setWidth(500);
+			stage.setTitle("Edit Media");
+			stage.setScene(editMedia);
+		});
 		
 		out.setOnAction(e -> {
 			String bookid = bookCOTF.getText();
@@ -479,7 +485,6 @@ public class DD extends Application{
 	private Scene createAddMedia() {
 		Pane pane = new Pane();
 		pane.setStyle("-fx-background-color: #5e5f66;");
-		pane.setPrefSize(600,600);
 		Text ISBN = new Text("ISBN");
 		Text title = new Text("Title");
 		Text author = new Text("Author");
@@ -555,6 +560,91 @@ public class DD extends Application{
 		
 		Scene addMediaScene = new Scene(pane);
 		return addMediaScene;
+	}
+	
+	private Scene createEditMedia() {
+		Pane pane = new Pane();
+		pane.setStyle("-fx-background-color: #5e5f66;");
+		Button searchB = new Button("search");
+		Button saveB = new Button("save");
+		Button deleteB = new Button("delete");
+		
+		Text rID = new Text("ResourceID");
+		TextField rIDTF = new TextField();
+		
+		rID.relocate(50 , 50);
+		rIDTF.relocate(200, 50);
+		searchB.relocate(375, 50);
+		
+		pane.getChildren().addAll(rID, rIDTF, searchB);
+		
+		Text ISBN = new Text("ISBN");
+		Text title = new Text("Title");
+		Text author = new Text("Author");
+		Text publisher = new Text("Publisher");
+		Text publicationdate = new Text("Publication Date");
+		Text edition = new Text("Edition");
+		Text booktype = new Text("Type");
+		Text medium = new Text("Medium");
+		Text genre = new Text("Genre");
+		Text libraryaddress = new Text("Location address");
+		
+		TextField ISBNTF = new TextField();
+		TextField titleTF = new TextField();
+		TextField authorTF = new TextField();
+		TextField publisherTF = new TextField();
+		TextField publicationdateTF = new TextField();
+		TextField editionTF = new TextField();
+		TextField booktypeTF = new TextField();
+		TextField mediumTF = new TextField();
+		TextField genreTF = new TextField();
+		TextField libraryaddressTF = new TextField();
+		
+		int startx = 50;
+		int starty = 100;
+		int xspace = 150;
+		int yspace = 30;
+		
+		ISBN.relocate(startx, starty);
+		title.relocate(startx, starty+yspace);
+		author.relocate(startx, starty+yspace*2);
+		publisher.relocate(startx, starty+yspace*3);
+		publicationdate.relocate(startx, starty+yspace*4);
+		edition.relocate(startx, starty+yspace*5);
+		booktype.relocate(startx, starty+yspace*6);
+		medium.relocate(startx, starty+yspace*7);
+		genre.relocate(startx, starty+yspace*8);
+		libraryaddress.relocate(startx, starty+yspace*9);
+		
+		startx = startx + xspace;
+		
+		ISBNTF.relocate(startx, starty);
+		titleTF.relocate(startx, starty+yspace);
+		authorTF.relocate(startx, starty+yspace*2);
+		publisherTF.relocate(startx, starty+yspace*3);
+		publicationdateTF.relocate(startx, starty+yspace*4);
+		editionTF.relocate(startx, starty+yspace*5);
+		booktypeTF.relocate(startx, starty+yspace*6);
+		mediumTF.relocate(startx, starty+yspace*7);
+		genreTF.relocate(startx, starty+yspace*8);
+		libraryaddressTF.relocate(startx, starty+yspace*9);
+		
+		saveB.relocate(startx + 110, starty+yspace*10);
+		deleteB.relocate(startx + 40, starty+yspace*10);
+		
+		saveB.setDisable(true);
+		deleteB.setDisable(true);
+		
+		pane.getChildren().addAll(ISBN, title, author, publisher, publicationdate, edition, booktype, medium, genre, libraryaddress);
+		pane.getChildren().addAll(ISBNTF, titleTF, authorTF, publisherTF, publicationdateTF, editionTF, booktypeTF, mediumTF, genreTF, libraryaddressTF);
+		pane.getChildren().addAll(saveB, deleteB);
+		
+		searchB.setOnAction(e -> {
+			
+		});
+		
+		Scene editMediaScene = new Scene(pane);
+		return editMediaScene;
 	}
 
 	private Scene createAddAdmin() {
