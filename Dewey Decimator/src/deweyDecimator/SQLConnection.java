@@ -211,6 +211,31 @@ public class SQLConnection {
 		}
 	}
 	
+	public void addMedia(String la, String isbn, String t, String a, String p, String pd, String e, String b, String m, String g) {
+		//get unique resourceID
+		int resourceID = getUnique("resourceID", "Book");
+		String insert = "INSERT INTO Book VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement is = sql.prepareStatement(insert);
+			
+			is.setInt(1, resourceID);
+			is.setString(2, la);
+			is.setString(3, isbn);
+			is.setString(4, t);
+			is.setString(5, a);
+			is.setString(6, p);
+			is.setString(7, pd);
+			is.setString(8, e);
+			is.setString(9, b);
+			is.setString(10, m);
+			is.setString(11, g);
+			
+			is.executeUpdate();
+		} catch (SQLException ee) {
+			System.out.println("Failed to add media");
+			ee.printStackTrace();
+		}
+	}
 	
 }
  

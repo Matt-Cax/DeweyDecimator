@@ -19,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -36,6 +37,7 @@ public class DD extends Application{
 	private Scene fines; 
 	private Scene addAdmin;
 	private Scene addLib;
+	private Scene addMedia;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -49,6 +51,7 @@ public class DD extends Application{
 		Scene fines = createFines();
 		Scene addAdmin = createAddAdmin();
 		Scene addLib = createAddLib();
+		Scene addMedia = createAddMedia();
 		this.patronView = patronView;
 		this.libView = libView;
 		this.adminView = adminView;
@@ -56,6 +59,7 @@ public class DD extends Application{
 		this.fines = fines;
 		this.addAdmin = addAdmin;
 		this.addLib = addLib;
+		this.addMedia = addMedia;
 		
 		// populate from database
 		
@@ -298,6 +302,13 @@ public class DD extends Application{
 			sql.checkIn(bookid, uid);
 			
 		});
+		
+		addMediaB.setOnAction(e -> {
+			stage.setHeight(500);
+			stage.setWidth(400);
+			stage.setTitle("Add Media");
+			stage.setScene(addMedia);
+		});
 
 		//Launch Scene
 		bpMaster.setTop(menu);
@@ -359,8 +370,6 @@ public class DD extends Application{
 		grid.add(finesTF, 1, 1);
 		grid.add(search, 2, 1);
 		grid.add(save, 2, 2);
-		
-		//TODO: back button?
 		
 		//Button Actions
 		search.setOnAction(e -> {
@@ -440,14 +449,95 @@ public class DD extends Application{
 			sql.addUser(fn, ln, ad, pn,"Patron");
 			
 			//reset to librarian view
-			stage.setHeight(600);
-			stage.setWidth(800);
+			stage.setHeight(300);
+			stage.setWidth(400);
 			stage.setTitle("Dewey Decimator - Librarian");
 			stage.setScene(libView);
 		});
 
 		Scene addPatronScene = new Scene(grid);
 		return addPatronScene;
+	}
+	
+	private Scene createAddMedia() {
+		Pane pane = new Pane();
+		pane.setStyle("-fx-background-color: #5e5f66;");
+		pane.setPrefSize(600,600);
+		Text ISBN = new Text("ISBN");
+		Text title = new Text("Title");
+		Text author = new Text("Author");
+		Text publisher = new Text("Publisher");
+		Text publicationdate = new Text("Publication Date");
+		Text edition = new Text("Edition");
+		Text booktype = new Text("Type");
+		Text medium = new Text("Medium");
+		Text genre = new Text("Genre");
+		Text libraryaddress = new Text("Location address");
+		
+		TextField ISBNTF = new TextField("12343333");
+		TextField titleTF = new TextField("title");
+		TextField authorTF = new TextField("author name");
+		TextField publisherTF = new TextField("publisher");
+		TextField publicationdateTF = new TextField("2018-01-01");
+		TextField editionTF = new TextField("first edition");
+		TextField booktypeTF = new TextField("YA");
+		TextField mediumTF = new TextField("paper back");
+		TextField genreTF = new TextField("horror");
+		TextField libraryaddressTF = new TextField("123 Library Lane");
+		
+		int startx = 50;
+		int starty = 50;
+		int xspace = 150;
+		int yspace = 30;
+		
+		ISBN.relocate(startx, starty);
+		title.relocate(startx, starty+yspace);
+		author.relocate(startx, starty+yspace*2);
+		publisher.relocate(startx, starty+yspace*3);
+		publicationdate.relocate(startx, starty+yspace*4);
+		edition.relocate(startx, starty+yspace*5);
+		booktype.relocate(startx, starty+yspace*6);
+		medium.relocate(startx, starty+yspace*7);
+		genre.relocate(startx, starty+yspace*8);
+		libraryaddress.relocate(startx, starty+yspace*9);
+		
+		startx = startx + xspace;
+		
+		ISBNTF.relocate(startx, starty);
+		titleTF.relocate(startx, starty+yspace);
+		authorTF.relocate(startx, starty+yspace*2);
+		publisherTF.relocate(startx, starty+yspace*3);
+		publicationdateTF.relocate(startx, starty+yspace*4);
+		editionTF.relocate(startx, starty+yspace*5);
+		booktypeTF.relocate(startx, starty+yspace*6);
+		mediumTF.relocate(startx, starty+yspace*7);
+		genreTF.relocate(startx, starty+yspace*8);
+		libraryaddressTF.relocate(startx, starty+yspace*9);
+		
+		Button addButton = new Button("add");
+		addButton.relocate(startx + 110, starty+yspace*10);
+		
+		pane.getChildren().addAll(ISBN, title, author, publisher, publicationdate, edition, booktype, medium, genre, libraryaddress);
+		pane.getChildren().addAll(ISBNTF, titleTF, authorTF, publisherTF, publicationdateTF, editionTF, booktypeTF, mediumTF, genreTF, libraryaddressTF);
+		pane.getChildren().addAll(addButton);
+		
+		
+		addButton.setOnAction(e -> {
+			// run SQL add
+			sql.addMedia(libraryaddressTF.getText(), ISBNTF.getText(), titleTF.getText(), authorTF.getText(),
+					publisherTF.getText(), publicationdateTF.getText(), editionTF.getText(), booktypeTF.getText(),
+					mediumTF.getText(), genreTF.getText());
+			
+			//reset to librarian view
+			stage.setHeight(600);
+			stage.setWidth(800);
+			stage.setTitle("Dewey Decimator - Librarian");
+			stage.setScene(libView);
+		});
+
+		
+		Scene addMediaScene = new Scene(pane);
+		return addMediaScene;
 	}
 
 	private Scene createAddAdmin() {
