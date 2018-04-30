@@ -122,18 +122,26 @@ public class DD extends Application{
 		options.setAlignment(Pos.CENTER);
 		options.setStyle("-fx-background-color: #5e5f66;");
 		options.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		HBox checkOut = new HBox(100);
-		checkOut.setAlignment(Pos.CENTER_LEFT);
-		checkOut.setStyle("-fx-border-color: #000000;"
+		HBox searchBar = new HBox(100);
+		searchBar.setAlignment(Pos.CENTER_LEFT);
+		searchBar.setStyle("-fx-border-color: #000000;"
 				+ "-fx-background-color: #5e5f66; -fx-border-radius: 8 8 8 8");
-		checkOut.setPadding(new Insets(0, 0, 0, 15));
+		searchBar.setPadding(new Insets(0, 0, 0, 15));
 		
 		GridPane searchGrid = new GridPane();
 		searchGrid.setVgap(2);
 		searchGrid.setHgap(10);
 		searchGrid.getColumnConstraints().add(new ColumnConstraints(50));
-		
 		Text textCO = new Text("Search");
+		TextField searchCOTF = new TextField();
+		searchCOTF.setPrefSize(540, 10);
+		searchGrid.add(textCO, 0, 0);
+		searchGrid.add(searchCOTF, 1, 0);
+		Button search = new Button("SEARCH");
+		search.setPrefSize(100, 30);
+		searchBar.getChildren().addAll(searchGrid, search);
+		
+		options.getChildren().addAll(searchBar);
 		
 		//Launch Scene
 		bpMaster.setTop(menu);
@@ -462,8 +470,8 @@ public class DD extends Application{
 
 		//Button Actions
 		patronScene.setOnAction(e -> {
-			stage.setHeight(200);
-			stage.setWidth(500);
+			stage.setHeight(600);
+			stage.setWidth(800);
 			stage.setTitle("Dewey Decimator - Patron");
 			stage.setScene(patronView);
 		});
