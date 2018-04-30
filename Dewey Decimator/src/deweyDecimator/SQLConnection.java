@@ -2,6 +2,7 @@ package deweyDecimator;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SQLConnection {
 	Connection sql;
@@ -80,29 +81,36 @@ public class SQLConnection {
 	
 	public String searchBooks(String searchType, String searchTerm)
 	{
-		String query = "SELECT * FROM Book WHERE " + searchType + "LIKE '%" + searchTerm + "%';";
+		String query = "SELECT * FROM Book WHERE " + searchType + " LIKE '%" + searchTerm + "%';";
 		// String query = SELECT * FROM BOOK WHERE author LIKE '%Dickens%';
-
+		System.out.println(query);
 		try {
 			//SQL statement object
 			Statement stmt = sql.createStatement();
 			
 			//get results
 			ResultSet results = stmt.executeQuery(query);
+		
+			StringBuilder builder = new StringBuilder();
+			int columnCount = results.getMetaData().getColumnCount();
 			
-			// set metadata (note indexing starts at 1)
-			ResultSetMetaData rsmd = results.getMetaData();
-			int numCols = rsmd.getColumnCount();
-			
-			// print column labels
-			for(int i=1; i<= numCols; i++) {
-				if (i == numCols) {
-					System.out.println(rsmd.getColumnLabel(i));
-				} else {
-					System.out.print(rsmd.getColumnLabel(i) + ", ");
+			while(results.next())
+			{
+				for(int i = 0; i < columnCount;)
+				{
+					builder.append(results.getString(i + 1));
+					if(++i < columnCount)
+					{
+						builder.append(", ");
+					}
 				}
+				builder.append("\r\n");
 			}
-			return results.getString(1);
+			return builder.toString();
+			
+			
+			
+			
 		} 
 		catch(SQLException e)
 		{
