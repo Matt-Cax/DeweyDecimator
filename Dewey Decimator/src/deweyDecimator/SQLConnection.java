@@ -18,47 +18,6 @@ public class SQLConnection {
 			System.out.println(e.getMessage());
 		}
 	}
-	// Select Statements
-	public void printAll(String table) {
-		try {
-			String query = "SELECT * FROM " + table;
-			//String query = "SELECT * FROM LibraryUser WHERE userID = 101";
-			
-			//SQL statement object
-			Statement stmt = sql.createStatement();
-			
-			//get results
-			ResultSet results = stmt.executeQuery(query);
-			
-			// set metadata (note indexing starts at 1)
-			ResultSetMetaData rsmd = results.getMetaData();
-			int numCols = rsmd.getColumnCount();
-			
-			// print column labels
-			for(int i=1; i<= numCols; i++) {
-				if (i == numCols) {
-					System.out.println(rsmd.getColumnLabel(i));
-				} else {
-					System.out.print(rsmd.getColumnLabel(i) + ", ");
-				}
-			}
-			
-			// print query results
-			while(results.next()) {
-				for(int i=1; i<= numCols; i++) {
-					String nextVal = results.getString(i);
-					if(i==numCols) {
-						System.out.println(nextVal);
-					} else {
-						System.out.print(nextVal + ", ");
-					}
-				}
-			}
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-	}
 	
 	public String find(String findcol, String table, String searchcol, String testval) {
 		String query = "SELECT " + findcol + " FROM " + table + " WHERE " + searchcol + " = " + testval;
@@ -73,7 +32,8 @@ public class SQLConnection {
 			
 			return results.getString(1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Find from " + table + " failed");
+			//e.printStackTrace();
 		}
 		
 		return null;
@@ -108,13 +68,11 @@ public class SQLConnection {
 			}
 			return builder.toString();
 			
-			
-			
-			
 		} 
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			System.out.println("search failed");
+			//e.printStackTrace();
 		}
 		
 		return null;
@@ -123,12 +81,14 @@ public class SQLConnection {
 	public void set(String table, String setcol, String setval, String searchcol, String searchval) {
 		String update = "UPDATE " +  table + " SET " + setcol + "=" + setval + " WHERE " + searchcol + "=" + searchval;
 		Statement stmt;
+		System.out.println("Trying: " + update);
 		
 		try {
 			stmt = sql.createStatement();
 			stmt.executeUpdate(update);
 		} catch (SQLException e) {
-			// nothing
+			System.out.println("Failed to edit " + table);
+			//System.out.println(e.getMessage());
 		}
 	}
 	
@@ -216,7 +176,7 @@ public class SQLConnection {
 			
 		} catch (SQLException e) {
 			System.out.println("Add card failed");
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 	}
 	
@@ -234,7 +194,7 @@ public class SQLConnection {
 			System.out.println("Loan added");
 		} catch (SQLException e) {
 			System.out.println("Failed to create loan");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
@@ -249,7 +209,8 @@ public class SQLConnection {
 			//commit
 			sql.commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Delete from " + table + " failed");
+			//e.printStackTrace();
 		}
 	}
 	
@@ -275,7 +236,7 @@ public class SQLConnection {
 			is.executeUpdate();
 		} catch (SQLException ee) {
 			System.out.println("Failed to add media");
-			ee.printStackTrace();
+			//ee.printStackTrace();
 		}
 	}
 	

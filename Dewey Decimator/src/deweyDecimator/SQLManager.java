@@ -83,4 +83,36 @@ public class SQLManager {
 	public void addMedia(String la, String isbn, String t, String a, String p, String pd, String e, String b, String m, String g) {
 		connection.addMedia(la,isbn,t,a,p,pd,e,b,m,g);
 	}
+	
+	public String[] getBookInfo(String rid) {
+		String[] info = new String[10];
+		info[0] = connection.find("ISBN", "Book", "resourceID", rid);
+		info[1] = connection.find("title", "Book", "resourceID", rid);
+		info[2] = connection.find("author", "Book", "resourceID", rid);
+		info[3] = connection.find("publisher", "Book", "resourceID", rid);
+		info[4] = connection.find("pubDate", "Book", "resourceID", rid);
+		info[5] = connection.find("edition", "Book", "resourceID", rid);
+		info[6] = connection.find("bookType", "Book", "resourceID", rid);
+		info[7] = connection.find("medium", "Book", "resourceID", rid);
+		info[8] = connection.find("genre", "Book", "resourceID", rid);
+		info[9] = connection.find("libAddress", "Book", "resourceID", rid);
+		return info;
+	}
+	
+	public void setBookInfo(String rid, String[] in) {
+		connection.set("Book", "ISBN", in[0], "resourceID", rid);
+		connection.set("Book", "title", "'"+in[1]+"'", "resourceID", rid);
+		connection.set("Book", "author", "'"+in[2]+"'", "resourceID", rid);
+		connection.set("Book", "publisher", "'"+in[3]+"'", "resourceID", rid);
+		connection.set("Book", "pubDate", "'"+in[4]+"'", "resourceID", rid);
+		connection.set("Book", "edition", "'"+in[5]+"'", "resourceID", rid);
+		connection.set("Book", "bookType", "'"+in[6]+"'", "resourceID", rid);
+		connection.set("Book", "medium", "'"+in[7]+"'", "resourceID", rid);
+		connection.set("Book", "genre", "'"+in[8]+"'", "resourceID", rid);
+		connection.set("Book", "libAddress", "'"+in[9]+"'", "resourceID", rid);
+	}
+	
+	public void deleteBook(String rid) {
+		connection.delete("Book", "resourceID", rid);
+	}
 }

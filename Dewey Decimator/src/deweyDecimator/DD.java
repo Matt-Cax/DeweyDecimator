@@ -639,7 +639,87 @@ public class DD extends Application{
 		pane.getChildren().addAll(saveB, deleteB);
 		
 		searchB.setOnAction(e -> {
+			String rIDs = rIDTF.getText();
+			String[] output = sql.getBookInfo(rIDs);
 			
+			// populate everything
+			ISBNTF.setText(output[0]);
+			titleTF.setText(output[1]);
+			authorTF.setText(output[2]);
+			publisherTF.setText(output[3]);
+			publicationdateTF.setText(output[4]);
+			editionTF.setText(output[5]);
+			booktypeTF.setText(output[6]);
+			mediumTF.setText(output[7]);
+			genreTF.setText(output[8]);
+			libraryaddressTF.setText(output[9]);
+			
+			//enable editing and deleting
+			saveB.setDisable(false);
+			deleteB.setDisable(false);
+		});
+		
+		saveB.setOnAction(e -> {
+			String[] input = new String[10];
+			input[0] = ISBNTF.getText();
+			input[1] = titleTF.getText();
+			input[2] = authorTF.getText();
+			input[3] = publisherTF.getText();
+			input[4] = publicationdateTF.getText();
+			input[5] = editionTF.getText();
+			input[6] = booktypeTF.getText();
+			input[7] = mediumTF.getText();
+			input[8] = genreTF.getText();
+			input[9] = libraryaddressTF.getText();
+			
+			String rid = rIDTF.getText();
+			
+			sql.setBookInfo(rid, input);
+			
+			//reset to librarian view
+			stage.setHeight(600);
+			stage.setWidth(800);
+			stage.setTitle("Dewey Decimator - Librarian");
+			stage.setScene(libView);
+			
+			//clear text boxes
+			rIDTF.clear();
+			ISBNTF.clear();
+			titleTF.clear();
+			authorTF.clear();
+			publisherTF.clear();
+			publicationdateTF.clear();
+			editionTF.clear();
+			booktypeTF.clear();
+			mediumTF.clear();
+			genreTF.clear();
+			libraryaddressTF.clear();
+			
+		});
+		
+		deleteB.setOnAction(e -> {
+			String rid = rIDTF.getText();
+			
+			sql.deleteBook(rid);
+			
+			//reset to librarian view
+			stage.setHeight(600);
+			stage.setWidth(800);
+			stage.setTitle("Dewey Decimator - Librarian");
+			stage.setScene(libView);
+			
+			//clear text boxes
+			rIDTF.clear();
+			ISBNTF.clear();
+			titleTF.clear();
+			authorTF.clear();
+			publisherTF.clear();
+			publicationdateTF.clear();
+			editionTF.clear();
+			booktypeTF.clear();
+			mediumTF.clear();
+			genreTF.clear();
+			libraryaddressTF.clear();
 		});
 		
 		Scene editMediaScene = new Scene(pane);
