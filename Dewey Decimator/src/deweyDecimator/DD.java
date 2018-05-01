@@ -168,14 +168,11 @@ public class DD extends Application{
 		ToggleGroup searchType = new ToggleGroup();
 		RadioButton author = new RadioButton("Author");
 		author.setToggleGroup(searchType);
-		//author.setSearchType("Author"); // TODO: CREATE "setSearchType" method
 		author.setSelected(true); // Author radio button is selected by default
 		RadioButton title = new RadioButton("Title");
 		title.setToggleGroup(searchType);
-		//title.setSearchType("Title"); // TODO: CREATE "setSearchType" method
 		RadioButton isbn = new RadioButton("ISBN");
 		isbn.setToggleGroup(searchType);
-		//isbn.setSearchType("ISBN"); // TODO: CREATE "setSearchType" method
 		radioButtons.getChildren().addAll(author, title, isbn); // adds buttons to the vbox
 		
 		searchBar.getChildren().addAll(searchGrid, search, radioButtons); // adds searchgrid, search button, and radiobuttons vbox to the searchbar
@@ -192,15 +189,16 @@ public class DD extends Application{
 		{
 			if(searchType.getSelectedToggle() == author)
 			{
-				searchOutput.setText(sql.searchForBook("author", searchCOTF.getText()));
+				
+				searchOutput.setText(formatSearchOutput(sql.searchForBook("author", searchCOTF.getText())));
 			}
 			else if(searchType.getSelectedToggle() == title)
 			{
-				searchOutput.setText(sql.searchForBook("title", searchCOTF.getText()));
+				searchOutput.setText(formatSearchOutput(sql.searchForBook("title", searchCOTF.getText())));
 			}
 			else if(searchType.getSelectedToggle() == isbn)
 			{
-				searchOutput.setText(sql.searchForBook("ISBN", searchCOTF.getText()));
+				searchOutput.setText(formatSearchOutput(sql.searchForBook("ISBN", searchCOTF.getText())));
 			}
 			else
 			{
@@ -472,9 +470,10 @@ public class DD extends Application{
 			sql.addUser(fn, ln, ad, pn,"Patron");
 			
 			//reset to librarian view
-			stage.setHeight(300);
-			stage.setWidth(400);
+			stage.setHeight(600);
+			stage.setWidth(800);
 			stage.setTitle("Dewey Decimator - Librarian");
+			stage.setScene(libView);
 			stage.setScene(libView);
 		});
 
@@ -785,22 +784,51 @@ public class DD extends Application{
 			stage.setScene(patronView);
 		});
 		libScene.setOnAction(e -> {
+			if (currentUser!=SQLManager.PATRON) {
 			stage.setHeight(600);
 			stage.setWidth(800);
 			stage.setTitle("Dewey Decimator - Librarian");
 			stage.setScene(libView);
+			}
 		});
 		adminScene.setOnAction(e -> {
+			if (currentUser==SQLManager.ADMIN) {
 			stage.setHeight(200);
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
+			}
 		});
 
 		return menu;
 	}
 
 
+	private String formatSearchOutput(String str) {
+		StringBuilder rtnStr = new StringBuilder();
+		String divider = "----------------------------------------------------------------------------\n";
+		rtnStr.append(divider);
+		String[] arr = str.split("; ");
+		int r = (arr.length)/11 - 1;
+		String[][] mat = new String[11][r+1];
+		
+		for (int j=0; j<=r; j++) {
+			for (int i=0; i<11; i++) {
+				mat[i][j] = arr[i+j*11];
+			}
+		}
+		
+		for (int k=0; k<=r; k++) {
+			rtnStr.append(String.format("%s by %s\n", mat[3][k], mat[4][k]));
+			rtnStr.append(String.format("Published by: %s in %s %s\n", mat[5][k], mat[6][k], mat[7][k]));
+			rtnStr.append(String.format("%s, %s, %s, %s", mat[2][k], mat[8][k], mat[9][k],mat[10][k]));
+			rtnStr.append("\n");
+			rtnStr.append(divider);
+		}
+		
+		return rtnStr.toString();
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

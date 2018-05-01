@@ -101,10 +101,10 @@ public class SQLConnection {
 					builder.append(results.getString(i + 1));
 					if(++i < columnCount)
 					{
-						builder.append(", ");
+						builder.append("; ");
 					}
 				}
-				builder.append("\r\n");
+				builder.append("; ");
 			}
 			return builder.toString();
 			
