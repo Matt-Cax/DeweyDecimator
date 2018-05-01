@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 
 public class DD extends Application{
 
+	// Declare globals
 	private SQLManager sql = new SQLManager();
 	private int currentUser = 0;
 	private Stage stage;
@@ -72,6 +73,7 @@ public class DD extends Application{
 		stage.show();
 	}
 
+	// Creates the login scene which checks for a valid user and sets their privileges
 	private Scene createLogin() {
 		//Initialize Large Scale Layouts
 		BorderPane bpMaster = new BorderPane();
@@ -94,17 +96,17 @@ public class DD extends Application{
 		grid.add(spacer, 0, 1);
 		grid.add(tooltip, 0, 2);
 		grid.add(hbox, 0 ,3);
-		//grid.setVgrow(title, Priority.ALWAYS);
 		
 		//Button Actions
 		enter.setOnAction(e -> {
+			//Grab and verify user
 			String loginID = userID.getText();
 			int userType = SQLManager.ERROR;
 			userType = sql.verifyLogin(loginID);
 			
+			//Set user privileges and open home screen
 			switch(userType) {
 			case SQLManager.PATRON:
-				//System.out.println("caught PATRON");
 				currentUser = userType;
 				stage.setHeight(600);
 				stage.setWidth(1000);
@@ -134,11 +136,14 @@ public class DD extends Application{
 		return loginScene;
 	}
 
+	//Creates the Patron view scene which allows for media to be searched for
 	private Scene createPatronView()
 	{
+		//Create large scale layouts
 		BorderPane bpMaster = new BorderPane();
 		HBox menu = createTabs(); // adds the view tabs
 		
+		//Create secondary layouts 
 		VBox options = new VBox(15);
 		options.setAlignment(Pos.CENTER);
 		options.setStyle("-fx-background-color: #5e5f66;");
@@ -149,7 +154,7 @@ public class DD extends Application{
 				+ "-fx-background-color: #5e5f66; -fx-border-radius: 8 8 8 8");
 		searchBar.setPadding(new Insets(0, 0, 0, 15));
 		
-		// 
+		// Create search bar and options
 		GridPane searchGrid = new GridPane();
 		searchGrid.setVgap(2);
 		searchGrid.setHgap(10);
@@ -164,7 +169,6 @@ public class DD extends Application{
 		
 		// This vbox contains the radiobuttons
 		VBox radioButtons = new VBox();
-		
 		ToggleGroup searchType = new ToggleGroup();
 		RadioButton author = new RadioButton("Author");
 		author.setToggleGroup(searchType);
@@ -184,7 +188,7 @@ public class DD extends Application{
 	
 		options.getChildren().addAll(searchBar, outputVbox); // 
 		
-		
+		//Generate results of search based on user input
 		search.setOnAction(e -> 
 		{
 			if(searchType.getSelectedToggle() == author)
@@ -204,8 +208,6 @@ public class DD extends Application{
 			{
 				searchOutput.setText("Error: no search type selected");
 			}
-			
-			//searchOutput.setText(sql.searchForBook("ISBN", searchCOTF.getText()));
 		});
 		
 		
@@ -215,12 +217,15 @@ public class DD extends Application{
 		Scene patronViewScene = new Scene(bpMaster);
 		return patronViewScene;
 	}
-	
+
+	//Creates the Librarian view scene which allows for media to be checked in and out as well as 
+	//patrons, media and fines be added and media edited
 	private Scene createLibView() {
 		//Initialize Large Scale Layouts
 		BorderPane bpMaster = new BorderPane();
 		HBox menu = createTabs();
 
+		//Create check in and check out fields
 		VBox options = new VBox(15);
 		options.setAlignment(Pos.CENTER);
 		options.setStyle("-fx-background-color: #5e5f66;");
@@ -306,7 +311,6 @@ public class DD extends Application{
 			stage.setTitle("Edit Media");
 			stage.setScene(editMedia);
 		});
-		
 		out.setOnAction(e -> {
 			String bookid = bookCOTF.getText();
 			String uid = patronCOTF.getText();
@@ -314,7 +318,6 @@ public class DD extends Application{
 			//create loan associated with card
 			sql.checkOut(bookid, uid);
 		});
-		
 		in.setOnAction(e -> {
 			String bookid = bookCITF.getText();
 			String uid = patronCITF.getText();
@@ -323,7 +326,6 @@ public class DD extends Application{
 			sql.checkIn(bookid, uid);
 			
 		});
-		
 		addMediaB.setOnAction(e -> {
 			stage.setHeight(500);
 			stage.setWidth(400);
@@ -338,21 +340,24 @@ public class DD extends Application{
 		return libViewScene;
 	}
 
+	//Creates the Administrator View which allows for admins and librarians to be added
 	private Scene createAdminView() {
+		//Create large scale layouts
 		BorderPane bpMaster = new BorderPane();
 		HBox menu = createTabs();
 		VBox vbox = new VBox(5);
-
 		vbox.setStyle("-fx-background-color: #5e5f66;");
 		vbox.setAlignment(Pos.TOP_CENTER);
 		vbox.setPadding(new Insets(30, 50, 30, 50));
 
+		//Create buttons
 		Button addAdminB = new Button("Add Administrator");
 		addAdminB.setPrefWidth(Double.MAX_VALUE);
 		Button addLibB = new Button("Add Librarian");
 		addLibB.setPrefWidth(Double.MAX_VALUE);
 		vbox.getChildren().addAll(addAdminB, addLibB);
 
+		//Button actions
 		addAdminB.setOnAction(e -> {
 			stage.setHeight(350);
 			stage.setWidth(500);
@@ -366,19 +371,23 @@ public class DD extends Application{
 			stage.setScene(addLib);
 		});
 
+		//Launch Scene
 		bpMaster.setTop(menu);
 		bpMaster.setCenter(vbox);
 		Scene adminViewScene = new Scene(bpMaster);
 		return adminViewScene;
 	}
 
+	//Creates the fines scene which allows for a fine to be created
 	private Scene createFines() {
+		//Create Large scale layouts
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setStyle("-fx-background-color: #5e5f66;");
 		grid.setVgap(15);
 		grid.setHgap(15);
 
+		//Populate large scale layouts
 		Text cardNumT = new Text("Library Card #");
 		Text finesT = new Text("Fines");
 		TextField cardNumTF  = new TextField();
@@ -401,7 +410,6 @@ public class DD extends Application{
 			String f = sql.getFines(cn);
 			finesTF.setText(f);
 		});
-		
 		save.setOnAction(e -> {
 			// get card number
 			String cn = cardNumTF.getText();
@@ -419,11 +427,14 @@ public class DD extends Application{
 			stage.setScene(libView);
 		});
 
+		//Launch Scene
 		Scene finesScene = new Scene(grid);
 		return finesScene;
 	}
 
+	//Creates the add patron scene which allows for a patron to be created
 	private Scene createAddPatron() {
+		//Create Large Scale layouts
 		GridPane grid = new GridPane();
 		grid.setStyle("-fx-background-color: #5e5f66;");
 		grid.setVgap(5);
@@ -436,18 +447,15 @@ public class DD extends Application{
 		c2.setHalignment(HPos.RIGHT);
 		grid.getColumnConstraints().addAll(c1,c2);
 
+		//Populate large scale layouts
 		Text firstName = new Text("First Name");
 		Text lastName = new Text("Last Name");
 		Text address = new Text("Address");
 		Text phoneNum = new Text("Phone #");
 		TextField firstNameTF = new TextField();
-		//firstNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField lastNameTF = new TextField();
-		//lastNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField addressTF = new TextField();
-		//addressTF.setPrefWidth(Double.MAX_VALUE);
 		TextField phoneNumTF = new TextField();
-		//phoneNumTF.setPrefWidth(Double.MAX_VALUE);
 		grid.add(firstName, 0, 0);
 		grid.add(lastName, 0, 1);
 		grid.add(address, 0, 2);
@@ -459,6 +467,7 @@ public class DD extends Application{
 		Button create = new Button("Create");
 		grid.add(create, 1, 4);
 		
+		//Button Actions
 		create.setOnAction(e -> {
 			//get info
 			String fn = firstNameTF.getText();
@@ -477,11 +486,14 @@ public class DD extends Application{
 			stage.setScene(libView);
 		});
 
+		//Launch Scene
 		Scene addPatronScene = new Scene(grid);
 		return addPatronScene;
 	}
-	
+
+	//Creates the add media scene which allows for a new media element to be created
 	private Scene createAddMedia() {
+		//Create Pane and Text Fields
 		Pane pane = new Pane();
 		pane.setStyle("-fx-background-color: #5e5f66;");
 		Text ISBN = new Text("ISBN");
@@ -506,11 +518,13 @@ public class DD extends Application{
 		TextField genreTF = new TextField("horror");
 		TextField libraryaddressTF = new TextField("123 Library Lane");
 		
+		//Initialize spacing variables
 		int startx = 50;
 		int starty = 50;
 		int xspace = 150;
 		int yspace = 30;
 		
+		//Place elements in scene
 		ISBN.relocate(startx, starty);
 		title.relocate(startx, starty+yspace);
 		author.relocate(startx, starty+yspace*2);
@@ -542,7 +556,7 @@ public class DD extends Application{
 		pane.getChildren().addAll(ISBNTF, titleTF, authorTF, publisherTF, publicationdateTF, editionTF, booktypeTF, mediumTF, genreTF, libraryaddressTF);
 		pane.getChildren().addAll(addButton);
 		
-		
+		//Button Actions
 		addButton.setOnAction(e -> {
 			// run SQL add
 			sql.addMedia(libraryaddressTF.getText(), ISBNTF.getText(), titleTF.getText(), authorTF.getText(),
@@ -556,12 +570,14 @@ public class DD extends Application{
 			stage.setScene(libView);
 		});
 
-		
+		//Launch Scene
 		Scene addMediaScene = new Scene(pane);
 		return addMediaScene;
 	}
 	
+	//Creates the edit media scene which allows for a media element to be edited
 	private Scene createEditMedia() {
+		//Create pane and options
 		Pane pane = new Pane();
 		pane.setStyle("-fx-background-color: #5e5f66;");
 		Button searchB = new Button("search");
@@ -571,12 +587,14 @@ public class DD extends Application{
 		Text rID = new Text("ResourceID");
 		TextField rIDTF = new TextField();
 		
+		//Position options
 		rID.relocate(50 , 50);
 		rIDTF.relocate(200, 50);
 		searchB.relocate(375, 50);
 		
 		pane.getChildren().addAll(rID, rIDTF, searchB);
 		
+		//Create input fields
 		Text ISBN = new Text("ISBN");
 		Text title = new Text("Title");
 		Text author = new Text("Author");
@@ -599,11 +617,13 @@ public class DD extends Application{
 		TextField genreTF = new TextField();
 		TextField libraryaddressTF = new TextField();
 		
+		//Initialize positioning variables
 		int startx = 50;
 		int starty = 100;
 		int xspace = 150;
 		int yspace = 30;
 		
+		//Place input fields
 		ISBN.relocate(startx, starty);
 		title.relocate(startx, starty+yspace);
 		author.relocate(startx, starty+yspace*2);
@@ -638,7 +658,9 @@ public class DD extends Application{
 		pane.getChildren().addAll(ISBNTF, titleTF, authorTF, publisherTF, publicationdateTF, editionTF, booktypeTF, mediumTF, genreTF, libraryaddressTF);
 		pane.getChildren().addAll(saveB, deleteB);
 		
+		//Button Actions
 		searchB.setOnAction(e -> {
+			//Find Media Element
 			String rIDs = rIDTF.getText();
 			String[] output = sql.getBookInfo(rIDs);
 			
@@ -658,8 +680,8 @@ public class DD extends Application{
 			saveB.setDisable(false);
 			deleteB.setDisable(false);
 		});
-		
 		saveB.setOnAction(e -> {
+			//Get user inputs
 			String[] input = new String[10];
 			input[0] = ISBNTF.getText();
 			input[1] = titleTF.getText();
@@ -674,6 +696,7 @@ public class DD extends Application{
 			
 			String rid = rIDTF.getText();
 			
+			//Update Media
 			sql.setBookInfo(rid, input);
 			
 			//reset to librarian view
@@ -694,12 +717,11 @@ public class DD extends Application{
 			mediumTF.clear();
 			genreTF.clear();
 			libraryaddressTF.clear();
-			
 		});
-		
 		deleteB.setOnAction(e -> {
 			String rid = rIDTF.getText();
 			
+			//Delete media item
 			sql.deleteBook(rid);
 			
 			//reset to librarian view
@@ -722,11 +744,14 @@ public class DD extends Application{
 			libraryaddressTF.clear();
 		});
 		
+		//Launch Scene
 		Scene editMediaScene = new Scene(pane);
 		return editMediaScene;
 	}
 
+	//Creates the add admin scene which allows for a new admin user to be created
 	private Scene createAddAdmin() {
+		//Create Large Scale Scenes
 		GridPane grid = new GridPane();
 		grid.setStyle("-fx-background-color: #5e5f66;");
 		grid.setVgap(5);
@@ -739,18 +764,15 @@ public class DD extends Application{
 		c2.setHalignment(HPos.RIGHT);
 		grid.getColumnConstraints().addAll(c1,c2);
 
+		//Populate with text fields
 		Text firstName = new Text("First Name");
 		Text lastName = new Text("Last Name");
 		Text address = new Text("Address");
 		Text phoneNum = new Text("Phone #");
 		TextField firstNameTF = new TextField();
-		//firstNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField lastNameTF = new TextField();
-		//lastNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField addressTF = new TextField();
-		//addressTF.setPrefWidth(Double.MAX_VALUE);
 		TextField phoneNumTF = new TextField();
-		//phoneNumTF.setPrefWidth(Double.MAX_VALUE);
 		grid.add(firstName, 0, 0);
 		grid.add(lastName, 0, 1);
 		grid.add(address, 0, 2);
@@ -762,6 +784,7 @@ public class DD extends Application{
 		Button create = new Button("Create");
 		grid.add(create, 1, 4);
 		
+		//Button Actions
 		create.setOnAction(e -> {
 			//get info
 			String fn = firstNameTF.getText();
@@ -772,17 +795,21 @@ public class DD extends Application{
 			// feed to SQL
 			sql.addUser(fn, ln, ad, pn,"Administrator");
 			
+			//Reset to Admin view
 			stage.setHeight(200);
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
 		});
 
+		//Launch Scene
 		Scene addAdminScene = new Scene(grid);
 		return addAdminScene;
 	}
 
+	//Creates the add librarian scene which allos for a new librarian user to be created
 	private Scene createAddLib() {
+		//Create Large Scale layouts
 		GridPane grid = new GridPane();
 		grid.setStyle("-fx-background-color: #5e5f66;");
 		grid.setVgap(5);
@@ -795,18 +822,15 @@ public class DD extends Application{
 		c2.setHalignment(HPos.RIGHT);
 		grid.getColumnConstraints().addAll(c1,c2);
 
+		//Populate layouts with text fields
 		Text firstName = new Text("First Name");
 		Text lastName = new Text("Last Name");
 		Text address = new Text("Address");
 		Text phoneNum = new Text("Phone #");
 		TextField firstNameTF = new TextField();
-		//firstNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField lastNameTF = new TextField();
-		//lastNameTF.setPrefWidth(Double.MAX_VALUE);
 		TextField addressTF = new TextField();
-		//addressTF.setPrefWidth(Double.MAX_VALUE);
 		TextField phoneNumTF = new TextField();
-		//phoneNumTF.setPrefWidth(Double.MAX_VALUE);
 		grid.add(firstName, 0, 0);
 		grid.add(lastName, 0, 1);
 		grid.add(address, 0, 2);
@@ -818,6 +842,7 @@ public class DD extends Application{
 		Button create = new Button("Create");
 		grid.add(create, 1, 4);
 		
+		//Button Actions
 		create.setOnAction(e -> {
 			//get info
 			String fn = firstNameTF.getText();
@@ -828,23 +853,27 @@ public class DD extends Application{
 			// feed to SQL
 			sql.addUser(fn, ln, ad, pn,"Librarian");
 			
+			//Reset to Admin view
 			stage.setHeight(200);
 			stage.setWidth(500);
 			stage.setTitle("Dewey Decimator - Administrator");
 			stage.setScene(adminView);
 		});
 
-
+		//Launch Scene
 		Scene addLibScene = new Scene(grid);
 		return addLibScene;
 	}
 
+	//Creates tabs that allows users to access other views
 	private HBox createTabs() {
+		//Create Large Scale Layouts
 		HBox menu = new HBox();
 		menu.setAlignment(Pos.BOTTOM_RIGHT);
-		menu.setStyle("-fx-background-color: #5e5f66;");
+		menu.setStyle("-fx-background-color: #f0f0f0;");
 		String buttonStyle = "-fx-background-color: #5e5f66;"
 				+ "-fx-border-color: #000000; -fx-border-radius: 10 10 0 0"; 
+		//Create a tab for each view
 		Button adminScene = new Button("Admin");
 		adminScene.setPrefSize(80, 20);
 		adminScene.setStyle(buttonStyle);
@@ -883,21 +912,26 @@ public class DD extends Application{
 		return menu;
 	}
 
-
+	//Formats the tuple returned from SQL to be more pleasant to the eye
 	private String formatSearchOutput(String str) {
+		//Initialize strings
 		StringBuilder rtnStr = new StringBuilder();
 		String divider = "----------------------------------------------------------------------------\n";
 		rtnStr.append(divider);
+		//Split query at known token
 		String[] arr = str.split("; ");
+		//Determine number of tuples
 		int r = (arr.length)/11 - 1;
 		String[][] mat = new String[11][r+1];
 		
+		//Isolate tuples into rows
 		for (int j=0; j<=r; j++) {
 			for (int i=0; i<11; i++) {
 				mat[i][j] = arr[i+j*11];
 			}
 		}
 		
+		//Create output for each tuple
 		for (int k=0; k<=r; k++) {
 			rtnStr.append(String.format("%s by %s\n", mat[3][k], mat[4][k]));
 			rtnStr.append(String.format("Published by: %s in %s %s\n", mat[5][k], mat[6][k], mat[7][k]));
@@ -906,9 +940,11 @@ public class DD extends Application{
 			rtnStr.append(divider);
 		}
 		
+		//Return nice looking string
 		return rtnStr.toString();
 	}
-	
+
+	//Launch UI
 	public static void main(String[] args) {
 		launch(args);
 	}

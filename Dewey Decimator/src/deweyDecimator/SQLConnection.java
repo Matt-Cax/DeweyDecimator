@@ -19,10 +19,12 @@ public class SQLConnection {
 		}
 	}
 	
+	//Searches a table for a certain attribute based on search criteria
 	public String find(String findcol, String table, String searchcol, String testval) {
+		//Generate query
 		String query = "SELECT " + findcol + " FROM " + table + " WHERE " + searchcol + " = " + testval;
-		//String query = "SELECT userType FROM LibraryUser";
-		//System.out.printf("Trying: %s\n", query);
+
+		//Attempt to execute query
 		Statement stmt;
 		try {
 			stmt = sql.createStatement();
@@ -38,7 +40,8 @@ public class SQLConnection {
 		
 		return null;
 	}
-	
+
+	//Returns media corresponding to a patrons query
 	public String searchBooks(String searchType, String searchTerm)
 	{
 		String query = "SELECT * FROM Book WHERE " + searchType + " LIKE '%" + searchTerm + "%';";
@@ -54,16 +57,20 @@ public class SQLConnection {
 			StringBuilder builder = new StringBuilder();
 			int columnCount = results.getMetaData().getColumnCount();
 			
+			//For each tuple
 			while(results.next())
 			{
+				//For eachc attribute
 				for(int i = 0; i < columnCount;)
 				{
+					//Add attribute to string delimited by ; 
 					builder.append(results.getString(i + 1));
 					if(++i < columnCount)
 					{
 						builder.append("; ");
 					}
 				}
+				//Add ; between tuples
 				builder.append("; ");
 			}
 			return builder.toString();
@@ -92,6 +99,7 @@ public class SQLConnection {
 		}
 	}
 	
+	//Adds a user to the databse
 	public ArrayList<Integer> addUser(String f, String l, String a, String p, String level) {
 		// find unique UserID
 		int ID = getUnique("userID", "LibraryUser");
@@ -101,6 +109,7 @@ public class SQLConnection {
 		
 		ArrayList<Integer> idcn = new ArrayList<Integer>();
 		
+		//Insert user into db
 		try {
 			String insert = "INSERT INTO LibraryUser VALUES (?, ?, ?, ?, ?, ?)";
 			PreparedStatement insertstatement = sql.prepareStatement(insert);
@@ -126,9 +135,11 @@ public class SQLConnection {
 		return idcn;
 		
 	}
-	
+
+	//Get size of table
 	public ArrayList<String> getCurrent(String col, String table) {
 		ArrayList<String> current = new ArrayList<String>();
+		//Execute query
 		try {
 			String query = "SELECT " + col + " FROM " + table;
 			Statement stmt = sql.createStatement();
@@ -137,6 +148,7 @@ public class SQLConnection {
 			ResultSetMetaData rsmd = results.getMetaData();
 			int numCols = rsmd.getColumnCount();
 			
+			//Add each tuple to array
 			while(results.next()) {
 				for(int i=1; i<= numCols; i++) {
 					String nextVal = results.getString(i);
@@ -151,10 +163,12 @@ public class SQLConnection {
 		return current;
 	}
 	
+	//Returns the next id that isn't in use
 	public int getUnique(String col, String table) {
 		
 		ArrayList<String> A = getCurrent(col, table);
 		
+		//find the max id
 		int max=0;
 		for(int i=0; i<A.size(); i++) {
 			if(Integer.parseInt(A.get(i)) > max) {
@@ -162,12 +176,14 @@ public class SQLConnection {
 			}
 		}
 		
+		//return next id
 		return max + 1;
 	}
 	
+	//Add card to db
 	public void addCard(int cn) {
 		String insert = "INSERT INTO Card VALUES (" + cn + ", " + "0.00, '2018-01-01')";
-		//System.out.println("Trying: " + insert);
+		
 		try {
 			Statement stmt = sql.createStatement();
 			stmt.executeUpdate(insert);
@@ -180,6 +196,7 @@ public class SQLConnection {
 		}
 	}
 	
+	//Add loan to db
 	public void createLoan(String resourceID, String cardNumber) {
 		//get unique loanid
 		int loanid = getUnique("loanNumber", "Loan");
@@ -198,6 +215,7 @@ public class SQLConnection {
 		}
 	}
 	
+	//Delete tuple 
 	public void delete(String table, String searchcol, String searchval) {
 		String deletestring = "DELETE FROM " + table + " WHERE " + searchcol + "=" + searchval;
 		
@@ -214,6 +232,7 @@ public class SQLConnection {
 		}
 	}
 	
+	//Add media to db
 	public void addMedia(String la, String isbn, String t, String a, String p, String pd, String e, String b, String m, String g) {
 		//get unique resourceID
 		int resourceID = getUnique("resourceID", "Book");
