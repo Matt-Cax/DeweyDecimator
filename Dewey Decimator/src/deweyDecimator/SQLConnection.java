@@ -46,7 +46,7 @@ public class SQLConnection {
 	{
 		String query = "SELECT * FROM Book WHERE " + searchType + " LIKE '%" + searchTerm + "%';";
 		// String query = SELECT * FROM BOOK WHERE author LIKE '%Dickens%';
-		System.out.println(query);
+		//System.out.println(query);
 		try {
 			//SQL statement object
 			Statement stmt = sql.createStatement();
@@ -88,7 +88,7 @@ public class SQLConnection {
 	public void set(String table, String setcol, String setval, String searchcol, String searchval) {
 		String update = "UPDATE " +  table + " SET " + setcol + "=" + setval + " WHERE " + searchcol + "=" + searchval;
 		Statement stmt;
-		System.out.println("Trying: " + update);
+		//System.out.println("Trying: " + update);
 		
 		try {
 			stmt = sql.createStatement();

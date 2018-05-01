@@ -21,10 +21,10 @@ public class SQLManager {
 	
 	//Determines if user is present in the database and what permissions they have
 	public int verifyLogin(String loginID) {
-		System.out.println("verifying login");
+		//System.out.println("verifying login");
 		//Check if user is in database
 		String type = connection.find("userType", "LibraryUser", "userID", loginID);
-		System.out.printf("User Type: %s\n", type);
+		//System.out.printf("User Type: %s\n", type);
 		//Determine and return permissions of user
 		switch(type) {
 		case "Patron":
@@ -75,7 +75,7 @@ public class SQLManager {
 		//create loan
 		connection.createLoan(resourceID, cardNumber);
 		
-		System.out.println("Checked out successfully");
+		//System.out.println("Checked out successfully");
 	}
 	
 	// calls the SQLConnection find method which checks for a valid loan and deletes it, indicating a book was checked in
@@ -86,7 +86,7 @@ public class SQLManager {
 		//delete loan
 		connection.delete("Loan", "loanNumber", loanid);
 		
-		System.out.println("Checked in successfully");
+		//System.out.println("Checked in successfully");
 	}
 	
 	// calls the SQLConnection addMedia method which adds a media item to the database
