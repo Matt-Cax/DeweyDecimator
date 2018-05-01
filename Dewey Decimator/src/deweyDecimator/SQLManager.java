@@ -8,7 +8,7 @@ public class SQLManager {
 	// login information
 	private static String url = "jdbc:mysql://localhost:3306/deweydecimator?autoReconnect=true&useSSL=false";
 	private static String user = "root";
-	private static String pass = "J-man5122";
+	private static String pass = "toor";
 	
 	// establish connection to server
 	private static SQLConnection connection = new SQLConnection(url, user, pass);
